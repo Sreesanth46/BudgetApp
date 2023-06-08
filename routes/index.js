@@ -1,5 +1,5 @@
 const router = require('express').Router();
 
-// router.use('/login', require('./api/login.js'))
+router.use('/register', require('./api/registeration.js'))
 
 module.exports = router
