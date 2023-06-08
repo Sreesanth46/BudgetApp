@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken')
-const userService = require('../services/RegisterationService')
+const userService = require('../services/UserService')
 
-const secretKey = process.env.MAIL_TOKEN_SECRET
-const expiryTime = process.env.MAIL_TOKEN_EXPIRY
+const secretKey = process.env.MAIL_TOKEN_SECRET || "MailSecret"
+const expiryTime = process.env.MAIL_TOKEN_EXPIRY || "1h"
 
 exports.register = async (req, res, next) => {
     const { email } = req.body
@@ -25,7 +25,7 @@ exports.signUp = async (req, res, next) => {
     const { name, phone, password } = req.body
     const { email } = req.user
 
-    const user = await userService.signUp({
+    const user = await userService.save({
         name, phone, password, email
     })
 
