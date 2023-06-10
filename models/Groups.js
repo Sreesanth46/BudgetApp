@@ -19,6 +19,12 @@ module.exports = (sequelize, DataTypes) => {
             as: 'groupMembers',
             onDelete: "cascade"
         });
+
+        Groups.belongsTo(models.userMaster, {
+            foreignKey: 'adminId',
+            as: 'user',
+            onDelete: "cascade"
+        });
     };
 
     return Groups
