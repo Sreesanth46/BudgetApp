@@ -37,6 +37,12 @@ module.exports = (sequelize, DataTypes) => {
             as: 'user',
             onDelete: "cascade"
         });
+
+        Users.hasMany(models.groupMaster, {
+            foreignKey: 'adminId',
+            as: 'user',
+            onDelete: "cascade"
+        });
     };
 
     return Users
