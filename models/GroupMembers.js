@@ -11,13 +11,13 @@ module.exports = (sequelize, DataTypes) => {
     })
 
     GroupMembers.associate = (models) => {
-        GroupMembers.hasOne(models.userMaster, {
+        GroupMembers.belongsTo(models.userMaster, {
             foreignKey: 'userId',
             as: 'user',
             onDelete: "cascade"
         });
 
-        GroupMembers.hasOne(models.groupMaster, {
+        GroupMembers.belongsTo(models.groupMaster, {
             foreignKey: 'groupId',
             as: 'group',
             onDelete: "cascade"
