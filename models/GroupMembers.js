@@ -23,15 +23,15 @@ module.exports = (sequelize, DataTypes) => {
             onDelete: "cascade"
         });
 
-        GroupMembers.hasMany(models.splitExpense, {
+        GroupMembers.hasMany(models.expenseSplit, {
             foreignKey: 'groupMemberId',
-            as: 'groupMember',
+            as: 'members',
             onDelete: "cascade"
         });
 
         GroupMembers.hasMany(models.expenseMaster, {
             foreignKey: 'groupMemberId',
-            as: 'groupMember',
+            as: 'adminUser',
             onDelete: "cascade"
         });
     };
