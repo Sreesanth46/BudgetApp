@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
 
         Users.hasMany(models.groupMaster, {
             foreignKey: 'adminId',
-            as: 'user',
+            as: 'admin',
             onDelete: "cascade"
         });
     };
