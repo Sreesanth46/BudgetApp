@@ -4,7 +4,7 @@ const groupController = require('../../controllers/GroupController')
 
 router.post('/', verifyToken, groupController.create)
 
-router.put('/', verifyToken, groupController.update)
+router.put('/:id', verifyToken, groupController.update)
 
 router.delete('/:id', verifyToken, groupController.delete)
 
