@@ -39,8 +39,11 @@ exports.delete = async (id) => {
     })
 }
 
-exports.update = async (form) => {
+exports.update = async ({ name, id }) => {
     return Groups.update({
-        ...form
+        name,
+        where: {
+            id
+        }
     })
 }
