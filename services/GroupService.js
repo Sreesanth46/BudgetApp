@@ -8,6 +8,17 @@ exports.save = async (form) => {
     })
 }
 
+exports.findById = async (id) => {
+    return Groups.findOne({
+        where: {
+            [Op.and]: [
+                { id },
+                { status: { [Op.ne]: 99 } }
+            ]
+        }
+    })
+}
+
 exports.findAllByUAdminId = async (adminId) => {
     return Groups.findAll({
         where: {
@@ -15,6 +26,15 @@ exports.findAllByUAdminId = async (adminId) => {
                 { status: { [Op.ne]: 99 } },
                 { adminId },
             ]
+        }
+    })
+}
+
+exports.delete = async (id) => {
+    return Groups.update({
+        status: 99,
+        where: {
+            id
         }
     })
 }
