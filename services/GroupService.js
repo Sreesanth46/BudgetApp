@@ -19,7 +19,7 @@ exports.findById = async (id) => {
     })
 }
 
-exports.findAllByUAdminId = async (adminId) => {
+exports.findAllByAdminId = async (adminId) => {
     return Groups.findAll({
         where: {
             [Op.and]: [
