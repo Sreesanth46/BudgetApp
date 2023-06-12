@@ -8,6 +8,12 @@ exports.save = async (form) => {
     })
 }
 
+exports.update = async (form) => {
+    return User.update({
+        ...form
+    })
+}
+
 exports.findByEmail = async (email) => {
     return User.findOne({
         where: {
