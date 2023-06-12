@@ -1,6 +1,5 @@
 const db = require('../models')
 const Expense = db.expenseMaster
-const GroupMember = db.groupMember
 const { Op } = require('sequelize');
 
 exports.save = async (form) => {
@@ -16,17 +15,26 @@ exports.findById = async (id) => {
                 { id },
                 { status: { [Op.ne]: 99 } }
             ]
-        },
-        include: {
-            model: GroupMember,
-            as: 'group'
         }
     })
 }
 
-exports.update = async (form) => {
+exports.update = async ({ name, amount, id }) => {
     return Expense.update({
-        ...form
+        name,
+        amount,
+        where: {
+            id
+        }
+    })
+}
+
+exports.markAsPaid = async (id) => {
+    return Expense.update({
+        status: 2,
+        where: {
+            id
+        }
     })
 }
 
