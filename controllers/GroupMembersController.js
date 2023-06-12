@@ -4,7 +4,7 @@ const { createError } = require('../error/error');
 exports.create = async (req, res, next) => {
     const { userId, groupId } = req.body
     let groupMember = await groupMemberService.findByUserIdAndGroupId({ userId, groupId })
-    if (groupMember) return res.status(400).json({ message: 'Member already exists' })
+    if (groupMember) return next(createError(400, 'Member already exists'))
     groupMember = await groupMemberService.save({ userId, groupId })
     return res.status(201).json({ message: 'Group member added successfully', groupMember })
 }
