@@ -8,4 +8,6 @@ router.use('/users', require('./authenticated/users.js'))
 
 router.use('/group', require('./authenticated/group.js'))
 
+router.use('/expense', require('./authenticated/expense.js'))
+
 module.exports = router
