@@ -1,11 +1,29 @@
 const db = require('../models')
 const Groups = db.groupMaster
-const { Op } = require('sequelize');
+const GroupMembers = db.groupMembers
+const { Op } = db.Sequelize
 
 exports.save = async (form) => {
-    return Groups.create({
-        ...form
-    })
+    const t = await db.sequelize.transaction();
+    let group
+
+    try {
+        group = await Groups.create({
+            ...form
+        }, { transaction: t })
+
+        await GroupMembers.create({
+            groupId: group.id,
+            userId: group.adminId
+        }, { transaction: t })
+
+        await t.commit();
+    } catch (err) {
+        await t.rollback();
+        return err
+    }
+
+    return group
 }
 
 exports.findById = async (id) => {
