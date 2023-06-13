@@ -33,17 +33,21 @@ exports.findAllByAdminId = async (adminId) => {
 exports.delete = async (id) => {
     return Groups.update({
         status: 99,
-        where: {
-            id
-        }
-    })
+    },
+        {
+            where: {
+                id
+            }
+        })
 }
 
 exports.update = async ({ name, id }) => {
     return Groups.update({
-        name,
-        where: {
-            id
-        }
-    })
+        name
+    },
+        {
+            where: {
+                id
+            }
+        })
 }
