@@ -5,11 +5,23 @@ const groupMemberService = require('../services/GroupMemberService')
 exports.create = async (req, res, next) => {
     const { name, amount, groupId } = req.body
     const { uId } = req.user
-    const groupMember = await groupMemberService.findByUserIdAndGroupId({ userId: uId, groupId })
-    if (!groupMember) return next(createError(404, 'Group not found or you are not a member of this group'))
 
-    const expense = await expenseService.create({ name, amount, groupId, createdBy: uId })
+    const groupMember = await groupMemberService.findByUserIdAndGroupId({ userId: uId, groupId })
+    if (!groupMember) return next(createError(404, 'Group does not exist or you are not a member of this group'))
+
+    const expense = await expenseService.save({ name, amount, groupId, createdBy: groupMember.id })
     return res.status(201).json({ message: 'Expense created successfully', expense })
+}
+
+exports.list = async (req, res, next) => {
+    const { uId } = req.user
+    const { groupId } = req.params
+
+    const groupMember = await groupMemberService.findByUserIdAndGroupId({ userId: uId, groupId })
+    if (!groupMember) return next(createError(404, 'Group does not exist or you are not a member of this group'))
+
+    const expense = await expenseService.listByCreatedBy(groupMember.id)
+    return res.status(200).json(expense)
 }
 
 exports.update = async (req, res, next) => {
