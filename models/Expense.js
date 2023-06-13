@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     Expense.associate = (models) => {
         Expense.belongsTo(models.groupMembers, {
             foreignKey: 'createdBy',
-            as: 'user',
+            as: 'createdUser',
             onDelete: "cascade"
         });
 
