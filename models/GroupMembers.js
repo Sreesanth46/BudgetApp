@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
 
         GroupMembers.hasMany(models.expenseMaster, {
             foreignKey: 'createdBy',
-            as: 'adminUser',
+            as: 'createdUser',
             onDelete: "cascade"
         });
     };
