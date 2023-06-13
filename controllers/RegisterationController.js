@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken')
 const userService = require('../services/UserService')
+const { createError } = require('../error/error')
+const bcrypt = require('bcrypt')
 
 const secretKey = process.env.MAIL_TOKEN_SECRET || "MailSecret"
 const expiryTime = process.env.MAIL_TOKEN_EXPIRY || "1h"
@@ -24,10 +26,17 @@ exports.signUp = async (req, res, next) => {
 
     const { name, phone, password } = req.body
     const { email } = req.user
+    let user
+    const encryptedPassword = await bcrypt.hash(password, 10)
 
-    const user = await userService.save({
-        name, phone, password, email
-    })
+    try {
+        user = await userService.save({
+            name, phone, password: encryptedPassword, email
+        })
+    } catch (err) {
+        return next(createError(400, 'User already exists'));
+    }
 
+    user = (({ password, ...rest }) => rest)(user.dataValues);
     return res.status(201).json({ message: "user registered successfully", user })
 }
