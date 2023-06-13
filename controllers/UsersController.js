@@ -4,8 +4,8 @@ const userService = require('../services/UserService')
 exports.update = async (req, res, next) => {
     const { uId } = req.user
     const { upi, phone, name, profilePic } = req.body
-    const user = await userService.update({ upi, phone, name, profilePic, id: uId })
-    return res.status(201).json(user)
+    await userService.update({ upi, phone, name, profilePic, id: uId })
+    return res.status(201).json({ message: 'User updated successfully' })
 }
 
 exports.searchUsers = async (req, res, next) => {
