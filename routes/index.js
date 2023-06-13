@@ -6,4 +6,6 @@ router.use('/login', require('./api/login.js'))
 
 router.use('/users', require('./authenticated/users.js'))
 
+router.use('/group', require('./authenticated/group.js'))
+
 module.exports = router
