@@ -1,6 +1,7 @@
 const db = require('../models')
-const GroupMember = db.groupMember
+const GroupMember = db.groupMembers
 const Group = db.groupMaster
+const { Op } = require('sequelize')
 
 exports.save = async (form) => {
     return GroupMember.create({
@@ -24,7 +25,7 @@ exports.findById = async (id) => {
 }
 
 exports.findByUserIdAndGroupId = async ({ userId, groupId }) => {
-    return GroupMember.findAll({
+    return GroupMember.findOne({
         where: {
             [Op.and]: [
                 { status: { [Op.ne]: 99 } },
