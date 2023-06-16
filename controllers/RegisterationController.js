@@ -9,7 +9,8 @@ const expiryTime = process.env.MAIL_TOKEN_EXPIRY || "1h"
 exports.register = async (req, res, next) => {
     const { email } = req.body
     const token = await jwt.sign({ email }, secretKey, { expiresIn: `${expiryTime}` })
-
+    const users = await userService.findByEmail(email)
+    if (users) return next(createError(400, 'User with this email already exists'));
     // TODO eMAIL
 
     return res.status(200).json({ message: "Please verify your email address", token })
