@@ -1,11 +1,33 @@
 const db = require('../models')
 const ExpenseSplit = db.expenseSplit
+const Expense = db.expenseMaster
 const { Op } = require('sequelize');
 
-exports.save = async (form) => {
-    return ExpenseSplit.create({
-        ...form
-    })
+exports.save = async ({ expenseId, ...form }) => {
+    try {
+        const expense = await ExpenseSplit.bulkCreate(form)
+        await Expense.update({
+            status: 2,
+        },
+            {
+                where: { id: expenseId }
+            })
+        return { expense, error: null }
+    } catch (error) {
+        return { expense: null, error }
+    }
+}
+
+exports.update = async (form) => {
+    try {
+        const expense = await ExpenseSplit.bulkCreate(
+            form,
+            { updateOnDuplicate: ["splitAmount"] }
+        )
+        return { expense, error: null }
+    } catch (error) {
+        return { expense: null, error }
+    }
 }
 
 exports.findById = async (id) => {
