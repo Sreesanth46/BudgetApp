@@ -3,9 +3,9 @@ const ExpenseSplit = db.expenseSplit
 const Expense = db.expenseMaster
 const { Op } = require('sequelize');
 
-exports.save = async ({ expenseId, ...form }) => {
+exports.save = async ({ expenseId, split }) => {
     try {
-        const expense = await ExpenseSplit.bulkCreate(form)
+        const expense = await ExpenseSplit.bulkCreate(split)
         await Expense.update({
             status: 2,
         },
