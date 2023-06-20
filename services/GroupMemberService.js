@@ -24,6 +24,17 @@ exports.findById = async (id) => {
     })
 }
 
+exports.findByGroupId = async (groupId) => {
+    return GroupMember.findAll({
+        where: {
+            [Op.and]: [
+                { groupId },
+                { status: { [Op.ne]: 99 } }
+            ]
+        }
+    })
+}
+
 exports.findByUserIdAndGroupId = async ({ userId, groupId }) => {
     return GroupMember.findOne({
         where: {
