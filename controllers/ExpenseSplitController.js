@@ -27,7 +27,7 @@ exports.create = async (req, res, next) => {
     const { expense, error } = await expenseSplitService.save({ expenseId, split })
     if (error) return next(createError(400, 'Something went wrong'))
 
-    return res.status(200).json({ message: "success", expense })
+    return res.status(200).json({ message: "success", ...expense })
 }
 
 exports.markAsPaid = async (req, res, next) => {
@@ -36,8 +36,20 @@ exports.markAsPaid = async (req, res, next) => {
 
     let expenseSplit = await expenseSplitService.findById(id)
     if (!expenseSplit) return next(createError(404, 'Split not found'))
-    if (expenseSplit.groupMember.user.id !== uId) return next(createError(403, 'You can only update your expense'))
+    if (expenseSplit.groupMember.userid !== uId) return next(createError(403, 'You can only update your expense'))
 
     expenseSplit = await expenseSplitService.updateStatus({ id, status: STATUSES.PAID })
+    return res.status(201).json({ message: 'Success', ...expenseSplit })
+}
+
+exports.verifyAsPaid = async (req, res, next) => {
+    const { id } = req.params
+    const { uId } = req.user
+
+    let expenseSplit = await expenseSplitService.findById(id)
+    if (!expenseSplit) return next(createError(404, 'Split not found'))
+    if (expenseSplit.expense.createdUser.userId !== uId) return next(createError(403, 'You did not create this expense'))
+
+    expenseSplit = await expenseSplitService.updateStatus({ id, status: STATUSES.VERIFIED })
     return res.status(201).json({ message: 'Success', ...expenseSplit })
 }
