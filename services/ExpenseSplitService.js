@@ -1,6 +1,7 @@
 const db = require('../models')
 const ExpenseSplit = db.expenseSplit
 const Expense = db.expenseMaster
+const GroupMember = db.groupMembers
 const { Op } = require('sequelize');
 const { STATUSES } = require('../constants/globals');
 
@@ -59,9 +60,11 @@ exports.updateStatus = async ({ id, status }) => {
         status
     },
         {
-            [Op.and]: [
-                { id },
-                { status: { [Op.ne]: STATUSES.DELETED } }
-            ]
+            where: {
+                [Op.and]: [
+                    { id },
+                    { status: { [Op.ne]: STATUSES.DELETED } }
+                ]
+            }
         })
 }
