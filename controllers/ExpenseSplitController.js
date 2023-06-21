@@ -2,6 +2,7 @@ const expenseSplitService = require("../services/ExpenseSplitService");
 const expenseService = require("../services/ExpenseService");
 const groupMemberService = require("../services/GroupMemberService");
 const { createError } = require('../error/error')
+const { STATUSES } = require('../constants/globals');
 
 exports.create = async (req, res, next) => {
     const { expenseId, groupId, split } = req.body;
@@ -27,4 +28,16 @@ exports.create = async (req, res, next) => {
     if (error) return next(createError(400, 'Something went wrong'))
 
     return res.status(200).json({ message: "success", expense })
+}
+
+exports.markAsPaid = async (req, res, next) => {
+    const { id } = req.params
+    const { uId } = req.user
+
+    let expenseSplit = await expenseSplitService.findById(id)
+    if (!expenseSplit) return next(createError(404, 'Split not found'))
+    if (expenseSplit.groupMember.user.id !== uId) return next(createError(403, 'You can only update your expense'))
+
+    expenseSplit = await expenseSplitService.updateStatus({ id, status: STATUSES.PAID })
+    return res.status(201).json({ message: 'Success', ...expenseSplit })
 }
