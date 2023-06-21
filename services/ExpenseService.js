@@ -3,6 +3,7 @@ const Expense = db.expenseMaster
 const GroupMember = db.groupMembers
 const Users = db.userMaster
 const { Op } = db.Sequelize
+const { STATUSES } = require('../constants/globals');
 
 exports.save = async (form) => {
     return Expense.create({
@@ -15,7 +16,7 @@ exports.findById = async (id) => {
         where: {
             [Op.and]: [
                 { id },
-                { status: { [Op.ne]: 99 } }
+                { status: { [Op.ne]: STATUSES.DELETED } }
             ]
         }
     })
@@ -26,7 +27,7 @@ exports.listByCreatedBy = async (createdBy) => {
         where: {
             [Op.and]: [
                 { createdBy },
-                { status: { [Op.ne]: 99 } }
+                { status: { [Op.ne]: STATUSES.DELETED } }
             ]
         },
         include: {
@@ -55,18 +56,16 @@ exports.update = async ({ name, amount, id }) => {
 
 exports.markAsPaid = async (id) => {
     return Expense.update({
-        status: 2,
+        status: STATUSES.VERIFIED,
     },
         {
-            where: {
-                id
-            }
+            where: { id }
         })
 }
 
 exports.delete = async (id) => {
     return Expense.update({
-        status: 99,
+        status: STATUSES.DELETED,
     },
         {
             where: {

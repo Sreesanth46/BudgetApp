@@ -2,6 +2,7 @@ const db = require('../models')
 const GroupMember = db.groupMembers
 const Group = db.groupMaster
 const { Op } = require('sequelize')
+const { STATUSES } = require('../constants/globals');
 
 exports.save = async (form) => {
     return GroupMember.create({
@@ -14,7 +15,7 @@ exports.findById = async (id) => {
         where: {
             [Op.and]: [
                 { id },
-                { status: { [Op.ne]: 99 } }
+                { status: { [Op.ne]: STATUSES.DELETED } }
             ]
         },
         include: {
@@ -29,7 +30,7 @@ exports.findByGroupId = async (groupId) => {
         where: {
             [Op.and]: [
                 { groupId },
-                { status: { [Op.ne]: 99 } }
+                { status: { [Op.ne]: STATUSES.DELETED } }
             ]
         }
     })
@@ -39,7 +40,7 @@ exports.findByUserIdAndGroupId = async ({ userId, groupId }) => {
     return GroupMember.findOne({
         where: {
             [Op.and]: [
-                { status: { [Op.ne]: 99 } },
+                { status: { [Op.ne]: STATUSES.DELETED } },
                 { userId },
                 { groupId },
             ]
@@ -49,7 +50,7 @@ exports.findByUserIdAndGroupId = async ({ userId, groupId }) => {
 
 exports.delete = async (id) => {
     return GroupMember.update({
-        status: 99,
+        status: STATUSES.DELETED,
         where: {
             id
         }
