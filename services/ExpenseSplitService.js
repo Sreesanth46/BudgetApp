@@ -2,6 +2,7 @@ const db = require('../models')
 const ExpenseSplit = db.expenseSplit
 const Expense = db.expenseMaster
 const { Op } = require('sequelize');
+const { STATUSES } = require('../constants/globals');
 
 exports.save = async ({ expenseId, split }) => {
     try {
@@ -35,8 +36,29 @@ exports.findById = async (id) => {
         where: {
             [Op.and]: [
                 { id },
-                { status: { [Op.ne]: 99 } }
+                { status: { [Op.ne]: STATUSES.DELETED } }
             ]
+        },
+        include: {
+            model: GroupMember,
+            as: 'groupMember',
+            include: {
+                model: Users,
+                as: 'user',
+                attributes: { exclude: ['password'] }
+            }
         }
     })
+}
+
+exports.updateStatus = async ({ id, status }) => {
+    return ExpenseSplit.update({
+        status
+    },
+        {
+            [Op.and]: [
+                { id },
+                { status: { [Op.ne]: STATUSES.DELETED } }
+            ]
+        })
 }
