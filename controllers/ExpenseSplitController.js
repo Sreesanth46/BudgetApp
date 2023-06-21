@@ -34,22 +34,24 @@ exports.markAsPaid = async (req, res, next) => {
     const { id } = req.params
     const { uId } = req.user
 
-    let expenseSplit = await expenseSplitService.findById(id)
+    const expenseSplit = await expenseSplitService.findById(id)
     if (!expenseSplit) return next(createError(404, 'Split not found'))
     if (expenseSplit.groupMember.userid !== uId) return next(createError(403, 'You can only update your expense'))
+    if (expenseSplit.status !== STATUSES.NEW) return next(createError(400, `The expense is already marked as paid or verified`))
 
-    expenseSplit = await expenseSplitService.updateStatus({ id, status: STATUSES.PAID })
-    return res.status(201).json({ message: 'Success', ...expenseSplit })
+    await expenseSplitService.updateStatus({ id, status: STATUSES.PAID })
+    return res.status(201).json({ message: 'Success', expenseSplit })
 }
 
 exports.verifyAsPaid = async (req, res, next) => {
     const { id } = req.params
     const { uId } = req.user
 
-    let expenseSplit = await expenseSplitService.findById(id)
+    const expenseSplit = await expenseSplitService.findById(id)
     if (!expenseSplit) return next(createError(404, 'Split not found'))
     if (expenseSplit.expense.createdUser.userId !== uId) return next(createError(403, 'You did not create this expense'))
+    if (expenseSplit.status === STATUSES.VERIFIED) return res.status(200).json({ message: 'Expense is already verified' })
 
-    expenseSplit = await expenseSplitService.updateStatus({ id, status: STATUSES.VERIFIED })
-    return res.status(201).json({ message: 'Success', ...expenseSplit })
+    await expenseSplitService.updateStatus({ id, status: STATUSES.VERIFIED })
+    return res.status(201).json({ message: 'Success', expenseSplit })
 }
