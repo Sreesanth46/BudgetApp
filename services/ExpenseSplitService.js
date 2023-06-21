@@ -39,15 +39,18 @@ exports.findById = async (id) => {
                 { status: { [Op.ne]: STATUSES.DELETED } }
             ]
         },
-        include: {
+        include: [{
             model: GroupMember,
             as: 'groupMember',
+        },
+        {
+            model: Expense,
+            as: 'expense',
             include: {
-                model: Users,
-                as: 'user',
-                attributes: { exclude: ['password'] }
-            }
-        }
+                model: GroupMember,
+                as: 'createdUser',
+            },
+        }]
     })
 }
 
