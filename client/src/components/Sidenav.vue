@@ -1,7 +1,14 @@
 <script setup>
-import DashboardIcon from "@/icons/DashboardIcon.vue";
-import GroupIcon from "@/icons/GroupIcon.vue";
-import SignoutIcon from "@/icons/SignoutIcon.vue";
+import { ref } from "vue";
+import DashboardIcon from "@icons/DashboardIcon.vue";
+import GroupIcon from "@icons/GroupIcon.vue";
+import SignoutIcon from "@icons/SignoutIcon.vue";
+
+const isOpen = ref(true);
+
+const openSidenav = () => {
+    isOpen.value = !isOpen.value;
+};
 
 const navData = [
     {
@@ -20,10 +27,15 @@ const navData = [
 <template>
     <aside
         id="logo-sidebar"
-        class="fixed top-0 left-0 z-40 w-64 h-screen pt-16 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0"
+        class="fixed top-0 left-0 z-40 h-screen pt-16 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0"
+        :class="[isOpen ? 'w-64' : 'w-20']"
+        @click="openSidenav()"
         aria-label="Sidebar"
     >
-        <div class="h-full px-3 pb-4 overflow-y-auto bg-white">
+        <div
+            class="h-full px-3 pb-4 overflow-y-auto bg-white"
+            :class="{ 'grid justify-center': !isOpen }"
+        >
             <ul class="space-y-2 font-medium">
                 <li v-for="{ label, routerLink, icon } in navData" :key="label">
                     <router-link
@@ -31,7 +43,9 @@ const navData = [
                         class="flex items-center p-2 text-gray-900 rounded-lg"
                     >
                         <component :is="icon" class="w-6 h-6" />
-                        <span class="ml-3">{{ label }}</span>
+                        <span class="ml-3" :class="{ hidden: !isOpen }">{{
+                            label
+                        }}</span>
                     </router-link>
                 </li>
             </ul>
@@ -44,7 +58,9 @@ const navData = [
                         class="flex items-center p-2 text-gray-900 rounded-lg"
                     >
                         <SignoutIcon class="w-6 h-6" />
-                        <span class="flex-1 ml-3 whitespace-nowrap"
+                        <span
+                            class="flex-1 ml-3 whitespace-nowrap"
+                            :class="{ hidden: !isOpen }"
                             >Sign Out</span
                         >
                     </router-link>
