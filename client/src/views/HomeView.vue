@@ -1,6 +1,11 @@
 <script setup>
+import Sidenav from "@/components/Sidenav.vue";
+import Navbar from "@/components/Navbar.vue";
 </script>
 
 <template>
-    <main></main>
+    <div>
+        <Sidenav />
+        <Navbar />
+    </div>
 </template>
