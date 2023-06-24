@@ -25,7 +25,7 @@
                             ></path>
                         </svg>
                     </button>
-                    <a href="https://flowbite.com" class="flex ml-2 md:mr-24">
+                    <a href="#" class="flex ml-2 md:mr-24">
                         <img
                             src="https://flowbite.com/docs/images/logo.svg"
                             class="h-8 mr-3"
@@ -60,7 +60,3 @@
         </div>
     </nav>
 </template>
-
-<script setup>
-import { RouterLink } from "vue-router";
-</script>
