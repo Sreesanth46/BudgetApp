@@ -1,11 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
-	{
-		path: '/',
-		name: 'Home',
-		component: () => import("@/views/HomeView.vue")
-	},
 
 	{
 		path: '/register',
@@ -16,13 +11,20 @@ const routes = [
 	{
 		path: '/signup',
 		name: 'Signup',
-		component: () => import("@/views/Signup.vue")
+		component: () => import("@/views/Signup.vue"),
+		props: route => ({ token: route.query.token })
 	},
 
 	{
 		path: '/login',
 		name: 'Login',
 		component: () => import("@/views/Login.vue")
+	},
+
+	{
+		path: '/',
+		name: 'Body',
+		component: () => import("@/views/HomeView.vue")
 	},
 ]
 
