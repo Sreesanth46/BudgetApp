@@ -1,14 +1,21 @@
 <script setup>
 import { reactive } from "vue";
+import { signUp } from "@/api/register.api";
+
+const props = defineProps(["token"]);
 
 const registerForm = reactive({
     name: "",
     phone: "",
-    passowrd: "",
+    password: "",
 });
 
-const handleSubmit = () => {
-    console.log("Submited form", registerForm);
+const handleSubmit = async () => {
+    try {
+        const res = await signUp(registerForm, props.token);
+    } catch (error) {
+        console.log("Error signing up" + error);
+    }
 };
 </script>
 
@@ -67,7 +74,7 @@ const handleSubmit = () => {
                                 name="password"
                                 id="password"
                                 placeholder="••••••••"
-                                v-model="registerForm.passowrd"
+                                v-model="registerForm.password"
                                 class="input-field"
                                 required
                             />
