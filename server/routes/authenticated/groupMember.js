@@ -4,6 +4,6 @@ const groupMemberController = require('../../controllers/GroupMembersController'
 
 router.post('/', verifyToken, groupMemberController.create)
 
-router.delete('/', verifyToken, groupMemberController.delete)
+router.delete('/:id', verifyToken, groupMemberController.delete)
 
 module.exports = router
