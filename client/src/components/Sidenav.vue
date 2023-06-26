@@ -34,7 +34,7 @@ const navData = [
     >
         <div
             class="h-full px-3 pb-4 overflow-y-auto bg-white"
-            :class="{ 'grid justify-center': !isOpen }"
+            :class="{ 'flex items-center flex-col': !isOpen }"
         >
             <ul class="space-y-2 font-medium">
                 <li v-for="{ label, routerLink, icon } in navData" :key="label">
