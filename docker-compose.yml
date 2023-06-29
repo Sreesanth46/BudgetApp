@@ -2,31 +2,46 @@ version: '3.9'
 
 services:
   mysql_db:
+    platform: linux/x86_64
     image: mysql:8
     restart: always
-    ports:
-      - 3307:3306
-    volumes:
-      - mysql_db:/var/lib/mysql
     environment:
-      MYSQL_DATABASE: budget
-      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PWD}
+      MYSQL_USER: ${DB_USR}
+      MYSQL_PASSWORD: ${DB_USR_PWD}
+    ports:
+      - 3309:3306
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 55
+    networks:
+      - budget_app_network
+
 
   api: 
     build:
       context: ./server
       dockerfile: Dockerfile
     ports:
-      - 8080:8080
+      - ${API_PORT}:${API_PORT}
+    networks:
+      - budget_app_network
     environment:
-      PORT: 8080
-      ACCESS_TOKEN_SECRET: w+/W7mc2/gMLQ9z3GU7ri0FpMaqEB1iMFRZHYTyx5So+jIzI46Qsm8nFevJLTRiQKr71Nb6QN6kTkdMOZZo2bg==
-      REFRESH_TOKEN_SECRET: eBHgjx/03PghJK6oVqQxT5wxN//7Zd+18h4tDb0MRkX1pkgOZiTFKb0ASwZNB/Px+T81H1ieFEqvndL3n+FACQ==
-      MAIL_TOKEN_SECRET: w7spHYG++VNfJyqs0C95bj9+ygrbPGCpWLegMNbh4JdZwwGx+pCN6qV78t+oOI8HwVGNbk2bGdH3GcteK7Fabw==
+      PORT: ${API_PORT}
+      DATABASE_URL: mysql://root:12345678@mysql_db/budget
+      ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}
+      REFRESH_TOKEN_SECRET: ${REFRESH_TOKEN_SECRET}
+      MAIL_TOKEN_SECRET: ${MAIL_TOKEN_SECRET}
     depends_on:
-      - mysql_db
+      mysql_db:
+        condition: service_healthy
 
-
+networks:
+  budget_app_network:
 
 volumes:
-  mysql_db: {}
+  mysql_db_volume: {}
