@@ -9,6 +9,7 @@ export const useUserStore = defineStore('UserStore', {
             upi: null,
             phone: null,
             error: null,
+            isLoggedIn: false
         }
     },
 
@@ -17,7 +18,8 @@ export const useUserStore = defineStore('UserStore', {
         getEmail: (state) => state.email,
         getUpi: (state) => state.upi,
         getPhone: (state) => state.phone,
-        getError: (state) => state.error
+        getError: (state) => state.error,
+        getIsLoggedIn: (state) => state.isLoggedIn
     },
 
     actions: {
@@ -28,12 +30,17 @@ export const useUserStore = defineStore('UserStore', {
             this.phone = details.phone
         },
 
+        setLoggedIn() {
+            this.isLoggedIn = true
+        },
+
         async verifyAccessToken() {
             try {
                 const accessToken = localStorage.getItem('accessToken')
-                const user = await verifyAccessToken(accessToken)
+                const user = await verifyAccessToken({ accessToken })
 
                 this.setUserDetails(user.data)
+                this.setLoggedIn()
             } catch (err) {
                 this.error = err.response.data.error
             }
