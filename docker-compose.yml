@@ -32,7 +32,7 @@ services:
       - budget_app_network
     environment:
       PORT: ${API_PORT}
-      DATABASE_URL: mysql://root:12345678@mysql_db/budget
+      DATABASE_URL: mysql://root:${DB_ROOT_PWD}@mysql_db/${DB_NAME}
       ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}
       REFRESH_TOKEN_SECRET: ${REFRESH_TOKEN_SECRET}
       MAIL_TOKEN_SECRET: ${MAIL_TOKEN_SECRET}
