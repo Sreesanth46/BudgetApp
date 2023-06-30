@@ -2,8 +2,11 @@
 import { reactive } from "vue";
 import { login } from "@/api/login.api";
 import { useRouter } from "vue-router";
+import { useUserStore } from "@stores/UserStore";
 
 const router = useRouter();
+const userStore = useUserStore();
+
 const loginform = reactive({
     email: "",
     password: "",
@@ -12,6 +15,8 @@ const loginform = reactive({
 const handleSubmit = async () => {
     try {
         const res = await login(loginform);
+        userStore.setLoggedIn();
+        userStore.setUserDetails(res.data);
         localStorage.setItem("accessToken", res.data.accessToken);
         localStorage.setItem("refreshToken", res.data.refreshToken);
         router.push({ name: "Body" });
