@@ -1,0 +1,47 @@
+version: '3.9'
+
+services:
+  mysql_db:
+    platform: linux/x86_64
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PWD}
+      MYSQL_USER: ${DB_USR}
+      MYSQL_PASSWORD: ${DB_USR_PWD}
+    ports:
+      - 3309:3306
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 55
+    networks:
+      - budget_app_network
+
+
+  api: 
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - ${API_PORT}:${API_PORT}
+    networks:
+      - budget_app_network
+    environment:
+      PORT: ${API_PORT}
+      DATABASE_URL: mysql://root:${DB_ROOT_PWD}@mysql_db/${DB_NAME}
+      ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}
+      REFRESH_TOKEN_SECRET: ${REFRESH_TOKEN_SECRET}
+      MAIL_TOKEN_SECRET: ${MAIL_TOKEN_SECRET}
+    depends_on:
+      mysql_db:
+        condition: service_healthy
+
+networks:
+  budget_app_network:
+
+volumes:
+  mysql_db_volume: {}

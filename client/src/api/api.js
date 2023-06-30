@@ -1,8 +1,8 @@
 import axios from 'axios'
-const getBaseURL = 'http://localhost:8080'
+const BaseURL = import.meta.env.VITE_BASE_URL
 
 const axiosParams = {
-    baseURL: getBaseURL,
+    baseURL: BaseURL,
     headers: { 'Content-type': 'application/json' },
 }
 
