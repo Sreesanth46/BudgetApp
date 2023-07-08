@@ -1,13 +1,17 @@
 <script setup>
-import { ref } from "vue";
+import { storeToRefs } from "pinia";
 import DashboardIcon from "@icons/DashboardIcon.vue";
 import GroupIcon from "@icons/GroupIcon.vue";
 import SignoutIcon from "@icons/SignoutIcon.vue";
+import { useCommonStore } from "@stores/CommonStore";
+const commonStore = useCommonStore();
 
-const isOpen = ref(true);
+const { getIsSidenavOpen } = storeToRefs(commonStore);
+
+const isOpen = getIsSidenavOpen;
 
 const openSidenav = () => {
-    isOpen.value = !isOpen.value;
+    commonStore.toggleSidenav();
 };
 
 const navData = [
