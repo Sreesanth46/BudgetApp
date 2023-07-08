@@ -9,7 +9,10 @@ const { getIsSidenavOpen } = storeToRefs(commonStore);
 
 <template>
     <div class="flex">
-        <div class="h-screen" :class="[getIsSidenavOpen ? 'w-64' : 'w-20']">
+        <div
+            class="h-screen md:flex-none"
+            :class="[getIsSidenavOpen ? 'w-64' : 'w-20']"
+        >
             <Sidenav />
         </div>
         <div class="fixed top-0">
