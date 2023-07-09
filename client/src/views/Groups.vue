@@ -7,6 +7,7 @@ import AppTable from "@/components/AppTable.vue";
 import Loader from "@/components/Loader.vue";
 import { STATUSES } from "@/utils/globals";
 import AppButton from "@/components/AppButton.vue";
+import { resetForm } from "@/utils/helpers";
 
 const GroupStore = useGroupStore();
 
@@ -22,7 +23,7 @@ const groupform = reactive({
 
 async function handleSubmit() {
     await GroupStore.createGroups(groupform);
-    groupform.name = "";
+    resetForm(groupform);
 }
 
 const keyValue = ["id", "name", "status", "createdAt"];
@@ -34,10 +35,10 @@ const keyValue = ["id", "name", "status", "createdAt"];
             <h4>Create a new group</h4>
             <form
                 @submit.prevent="handleSubmit()"
-                class="space-y-4 md:space-y-6"
+                class="space-y-4 md:space-y-4"
             >
                 <AppInput
-                    :id="`group-name-inpup`"
+                    :id="`group-name-input`"
                     v-model="groupform.name"
                     :name="`Group name`"
                 />
