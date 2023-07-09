@@ -1,12 +1,12 @@
 import { defineStore } from "pinia";
-import { createGroup, updateGroup, deleteGroup } from '@/api/group.api'
+import { createGroup, listGroup, updateGroup, deleteGroup } from '@/api/group.api'
 import { STATUSES } from '@/utils/globals'
 
 export const useGroupStore = defineStore('GroupStore', {
     state: () => {
         return {
             error: null,
-            expenses: null,
+            groups: null,
             status: STATUSES.PENDING
         }
     },
@@ -21,6 +21,19 @@ export const useGroupStore = defineStore('GroupStore', {
             try {
                 this.status = STATUSES.LOADING
                 await createGroup(form)
+                this.status = STATUSES.SUCCESS
+
+            } catch (err) {
+                this.status = STATUSES.ERROR
+                this.error = err.response.data.error
+            }
+        },
+
+        async listGroups() {
+            try {
+                this.status = STATUSES.LOADING
+                const groups = await listGroup()
+                this.groups = groups.data
                 this.status = STATUSES.SUCCESS
 
             } catch (err) {
