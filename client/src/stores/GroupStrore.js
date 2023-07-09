@@ -13,7 +13,8 @@ export const useGroupStore = defineStore('GroupStore', {
 
     getters: {
         getGroupStatus: (state) => state.status,
-        getGroupError: (state) => state.error
+        getGroupError: (state) => state.error,
+        getGroups: (state) => state.groups
     },
 
     actions: {
@@ -21,6 +22,7 @@ export const useGroupStore = defineStore('GroupStore', {
             try {
                 this.status = STATUSES.LOADING
                 await createGroup(form)
+                await this.fetchGroups()
                 this.status = STATUSES.SUCCESS
 
             } catch (err) {
@@ -29,7 +31,7 @@ export const useGroupStore = defineStore('GroupStore', {
             }
         },
 
-        async listGroups() {
+        async fetchGroups() {
             try {
                 this.status = STATUSES.LOADING
                 const groups = await listGroup()
@@ -46,6 +48,7 @@ export const useGroupStore = defineStore('GroupStore', {
             try {
                 this.status = STATUSES.LOADING
                 await updateGroup(form, id)
+                await this.fetchGroups()
                 this.status = STATUSES.SUCCESS
 
             } catch (err) {
@@ -58,6 +61,7 @@ export const useGroupStore = defineStore('GroupStore', {
             try {
                 this.status = STATUSES.LOADING
                 await deleteGroup(id)
+                await this.fetchGroups()
                 this.status = STATUSES.SUCCESS
 
             } catch (err) {
