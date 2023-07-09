@@ -2,6 +2,7 @@
 import { storeToRefs } from "pinia";
 import DashboardIcon from "@icons/DashboardIcon.vue";
 import GroupIcon from "@icons/GroupIcon.vue";
+import CashIcon from "@icons/CashIcon.vue";
 import SignoutIcon from "@icons/SignoutIcon.vue";
 import { useCommonStore } from "@stores/CommonStore";
 const commonStore = useCommonStore();
@@ -24,6 +25,11 @@ const navData = [
         label: "Groups",
         icon: GroupIcon,
         routerLink: "Groups",
+    },
+    {
+        label: "Expenses",
+        icon: CashIcon,
+        routerLink: "Expenses",
     },
 ];
 </script>
