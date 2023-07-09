@@ -11,7 +11,10 @@ export const useExpenseStore = defineStore('ExpenseStore', {
         }
     },
 
-    getters: {},
+    getters: {
+        getExpenses: (state) => state.expenses,
+        getExpenseStatus: (state) => state.status,
+    },
 
     actions: {
         async fetchExpense(groupId) {
