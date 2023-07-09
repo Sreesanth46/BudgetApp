@@ -1,23 +1,36 @@
 <script setup lang="ts">
-type TInput = "email" | "password" | "number" | "date" | "search"
+import { PropType } from "vue";
+
+type TInput = "email" | "password" | "number" | "date" | "search";
+
 const props = defineProps({
+    modelValue: { type: String, required: true, default: "" },
+    inputType: { type: String as PropType<TInput>, default: "text" },
     name: { type: String, required: true },
     id: { type: String, required: true },
     placeholder: { type: String },
     required: { type: Boolean },
 });
+
+const emit = defineEmits(["update:modelValue"]);
+
+function updateInput(event: any) {
+    emit("update:modelValue", event.target.value);
+}
 </script>
 
 <template>
     <div>
-        <label for="email" class="label-field"><slot></slot></label>
+        <label :for="name" class="label-field">{{ name }}</label>
         <input
             class="input-field"
-            type="email"
+            :type="inputType"
             :name="name"
             :id="id"
             :placeholder="placeholder"
             :required="required"
+            :value="modelValue"
+            @input="updateInput"
         />
     </div>
 </template>
