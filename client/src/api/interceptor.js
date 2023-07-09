@@ -1,8 +1,7 @@
-import axios from 'axios';
 import { refreshAccessToken } from './login.api';
 const publicRoutes = ['register', 'signup', 'login']
 
-const interceptor = () => {
+const interceptor = (axios) => {
     axios.interceptors.request.use((config) => {
 
         if (publicRoutes.includes(config.url)) return config;
