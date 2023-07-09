@@ -18,12 +18,12 @@ const navData = [
     {
         label: "Dashboard",
         icon: DashboardIcon,
-        routerLink: "/",
+        routerLink: "Dashboard",
     },
     {
-        label: "Group",
+        label: "Groups",
         icon: GroupIcon,
-        routerLink: "/",
+        routerLink: "Groups",
     },
 ];
 </script>
@@ -43,7 +43,7 @@ const navData = [
             <ul class="space-y-2 font-medium">
                 <li v-for="{ label, routerLink, icon } in navData" :key="label">
                     <router-link
-                        :to="routerLink"
+                        :to="{ name: routerLink }"
                         class="flex items-center p-2 text-gray-900 rounded-lg"
                     >
                         <component :is="icon" class="w-6 h-6" />
@@ -58,7 +58,7 @@ const navData = [
             >
                 <li>
                     <router-link
-                        to="#"
+                        :to="{ name: 'Login' }"
                         class="flex items-center p-2 text-gray-900 rounded-lg"
                     >
                         <SignoutIcon class="w-6 h-6" />
