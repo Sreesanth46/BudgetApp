@@ -1,27 +1,28 @@
 import { defineStore } from "pinia";
-import { createExpense, listExpense, updateExpense, deleteExpense } from "@/api/expense.api"
+import { createGroup, listGroup, updateGroup, deleteGroup } from '@/api/group.api'
 import { STATUSES } from '@/utils/globals'
 
-export const useExpenseStore = defineStore('ExpenseStore', {
+export const useGroupStore = defineStore('GroupStore', {
     state: () => {
         return {
             error: null,
-            expenses: null,
+            groups: null,
             status: STATUSES.PENDING
         }
     },
 
     getters: {
-        getExpenses: (state) => state.expenses,
-        getExpenseStatus: (state) => state.status,
+        getGroupStatus: (state) => state.status,
+        getGroupError: (state) => state.error,
+        getGroups: (state) => state.groups
     },
 
     actions: {
-        async fetchExpense(groupId) {
+        async createGroups(form) {
             try {
                 this.status = STATUSES.LOADING
-                const expenses = await listExpense(groupId)
-                this.expenses = expenses
+                await createGroup(form)
+                await this.fetchGroups()
                 this.status = STATUSES.SUCCESS
 
             } catch (err) {
@@ -30,11 +31,11 @@ export const useExpenseStore = defineStore('ExpenseStore', {
             }
         },
 
-        async createExpense(form) {
+        async fetchGroups() {
             try {
                 this.status = STATUSES.LOADING
-                await createExpense(form)
-                await this.fetchExpense()
+                const groups = await listGroup()
+                this.groups = groups.data
                 this.status = STATUSES.SUCCESS
 
             } catch (err) {
@@ -43,11 +44,11 @@ export const useExpenseStore = defineStore('ExpenseStore', {
             }
         },
 
-        async updateExpense(form, id) {
+        async updateGroups(form, id) {
             try {
                 this.status = STATUSES.LOADING
-                await updateExpense(form, id)
-                await this.fetchExpense()
+                await updateGroup(form, id)
+                await this.fetchGroups()
                 this.status = STATUSES.SUCCESS
 
             } catch (err) {
@@ -56,11 +57,11 @@ export const useExpenseStore = defineStore('ExpenseStore', {
             }
         },
 
-        async deleteExpense(id) {
+        async deleteGroups(id) {
             try {
                 this.status = STATUSES.LOADING
-                await listExpense(id)
-                await this.fetchExpense()
+                await deleteGroup(id)
+                await this.fetchGroups()
                 this.status = STATUSES.SUCCESS
 
             } catch (err) {
@@ -68,5 +69,12 @@ export const useExpenseStore = defineStore('ExpenseStore', {
                 this.error = err.response.data.error
             }
         },
+
+        resetErrors() {
+            setTimeout(() => {
+                this.error = null
+                this.status = STATUSES.PENDING
+            }, 10000)
+        }
     },
 })

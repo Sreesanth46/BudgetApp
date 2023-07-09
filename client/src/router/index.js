@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useUserStore } from '../stores/UserStore'
+import { useUserStore } from '@stores/UserStore'
 import { storeToRefs } from 'pinia';
 
 const routes = [
@@ -26,17 +26,36 @@ const routes = [
 	{
 		path: '/',
 		name: 'Body',
+		redirect: { name: 'Dashboard' },
 		component: () => import("@/views/HomeView.vue"),
 		meta: { Authenticated: true },
 		children: [
 
+			{
+				path: '/dashboard',
+				name: 'Dashboard',
+				component: () => import("@views/Dashboard.vue")
+			},
+
+			{
+				path: '/groups',
+				name: 'Groups',
+				component: () => import("@views/Groups.vue")
+			},
+
+			{
+				path: '/expenses',
+				name: 'Expenses',
+				component: () => import("@views/Expenses.vue")
+			},
 		]
 	},
 ]
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
-	routes
+	routes,
+	linkActiveClass: 'bg-gray-300'
 })
 
 router.beforeEach(async (to, from) => {

@@ -8,6 +8,12 @@ exports.create = async (req, res, next) => {
     return res.status(201).json({ message: 'Group created successfully', groups })
 }
 
+exports.list = async (req, res, next) => {
+    const { uId } = req.user
+    const groups = await groupService.findAllByAdminId(uId);
+    return res.status(200).json(groups)
+}
+
 exports.update = async (req, res, next) => {
     const { name } = req.body
     const { id } = req.params
