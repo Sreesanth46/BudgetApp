@@ -1,4 +1,5 @@
 import axios from 'axios'
+import interceptor from '@/api/interceptor'
 const BaseURL = import.meta.env.VITE_BASE_URL
 
 const axiosParams = {
@@ -7,6 +8,7 @@ const axiosParams = {
 }
 
 const axiosInstance = axios.create(axiosParams);
+interceptor(axiosInstance);
 
 const api = (axios) => {
     return {
