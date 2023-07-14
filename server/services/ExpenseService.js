@@ -42,6 +42,27 @@ exports.listByCreatedBy = async (createdBy) => {
     })
 }
 
+exports.listAllByCreatedBy = async (id) => {
+    return Expense.findAll({
+        where: {
+            [Op.and]: [
+                { status: { [Op.ne]: STATUSES.DELETED } },
+                { '$createdUser.user_id$': { [Op.eq]: id } }
+            ]
+        },
+        include: {
+            model: GroupMember,
+            as: 'createdUser',
+            include: {
+                model: Users,
+                as: 'user',
+                where: { id },
+                attributes: { exclude: ['password'] }
+            }
+        }
+    })
+}
+
 exports.update = async ({ name, amount, id }) => {
     return Expense.update({
         name,

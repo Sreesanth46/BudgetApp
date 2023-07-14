@@ -24,6 +24,13 @@ exports.list = async (req, res, next) => {
     return res.status(200).json(expense)
 }
 
+exports.listAll = async (req, res, next) => {
+    const { uId } = req.user
+    const expense = await expenseService.listAllByCreatedBy(uId)
+
+    return res.status(200).json(expense)
+}
+
 exports.update = async (req, res, next) => {
     const { name, amount } = req.body
     const { uId } = req.user
