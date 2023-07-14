@@ -14,7 +14,16 @@ onMounted(() => {
     ExpensesStore.fetchExpense();
 });
 
-const keyValue = ["id", "name", "amount", "status", "createdAt"];
+const headers = ["id", "name", "amount", "status", "Created At", "Created By"];
+
+const keyValue = [
+    "id",
+    "name",
+    "amount",
+    "status",
+    "createdAt",
+    ["createdUser", "user", "name"],
+];
 </script>
 
 <template>
@@ -31,7 +40,7 @@ const keyValue = ["id", "name", "amount", "status", "createdAt"];
                 </router-link>
             </div>
         </div>
-        <AppTable :headers="keyValue" :keys="keyValue" :data="getExpenses" />
+        <AppTable :headers="headers" :keys="keyValue" :data="getExpenses" />
         <Loader v-if="getExpenseStatus === STATUSES.LOADING" />
     </div>
 </template>
