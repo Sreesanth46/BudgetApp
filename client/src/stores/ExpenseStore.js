@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { createExpense, listExpense, updateExpense, deleteExpense } from "@/api/expense.api"
+import { createExpense, listExpenseByGroup, listAllExpense, updateExpense, deleteExpense } from "@/api/expense.api"
 import { STATUSES } from '@/utils/globals'
 
 export const useExpenseStore = defineStore('ExpenseStore', {
@@ -20,7 +20,7 @@ export const useExpenseStore = defineStore('ExpenseStore', {
         async fetchExpense(groupId) {
             try {
                 this.status = STATUSES.LOADING
-                const expenses = await listExpense(groupId)
+                const expenses = await listExpenseByGroup(groupId)
                 this.expenses = expenses
                 this.status = STATUSES.SUCCESS
 
@@ -59,7 +59,7 @@ export const useExpenseStore = defineStore('ExpenseStore', {
         async deleteExpense(id) {
             try {
                 this.status = STATUSES.LOADING
-                await listExpense(id)
+                await listExpenseByGroup(id)
                 await this.fetchExpense()
                 this.status = STATUSES.SUCCESS
 
