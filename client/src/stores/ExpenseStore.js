@@ -17,11 +17,24 @@ export const useExpenseStore = defineStore('ExpenseStore', {
     },
 
     actions: {
-        async fetchExpense(groupId) {
+        async fetchExpense() {
+            try {
+                this.status = STATUSES.LOADING
+                const expenses = await listAllExpense()
+                this.expenses = expenses.data
+                this.status = STATUSES.SUCCESS
+
+            } catch (err) {
+                this.status = STATUSES.ERROR
+                this.error = err.response.data.error
+            }
+        },
+
+        async fetchExpenseByGroupId(groupId) {
             try {
                 this.status = STATUSES.LOADING
                 const expenses = await listExpenseByGroup(groupId)
-                this.expenses = expenses
+                this.expenses = expenses.data
                 this.status = STATUSES.SUCCESS
 
             } catch (err) {
