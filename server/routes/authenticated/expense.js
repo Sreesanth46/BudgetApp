@@ -4,7 +4,9 @@ const expenseController = require('../../controllers/ExpenseController')
 
 router.post('/', verifyToken, expenseController.create)
 
-router.get('/:groupId', verifyToken, expenseController.list)
+router.get('/group/:groupId', verifyToken, expenseController.list)
+
+router.get('/all', verifyToken, expenseController.listAll)
 
 router.put('/:id', verifyToken, expenseController.update)
 
