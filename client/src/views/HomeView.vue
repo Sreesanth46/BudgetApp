@@ -10,15 +10,18 @@ const { getIsSidenavOpen } = storeToRefs(commonStore);
 <template>
     <div class="flex">
         <div
-            class="h-screen md:flex-none z-0"
-            :class="[getIsSidenavOpen ? 'w-64' : 'w-20']"
+            class="h-screen md:flex-none z-0 sm:w-0"
+            :class="[getIsSidenavOpen ? 'md:w-64' : 'md:w-20']"
         >
             <Sidenav />
         </div>
         <div class="fixed top-0">
             <Navbar />
         </div>
-        <div class="flex-grow pt-16 p-2">
+        <div
+            id="child-router-view"
+            class="flex-grow pt-20 md:p-16 xs:p-8 mx-auto -z-10"
+        >
             <router-view />
         </div>
     </div>
