@@ -5,7 +5,9 @@ import GroupIcon from "@icons/GroupIcon.vue";
 import CashIcon from "@icons/CashIcon.vue";
 import SignoutIcon from "@icons/SignoutIcon.vue";
 import { useCommonStore } from "@stores/CommonStore";
+import { useUserStore } from "@stores/UserStore";
 const commonStore = useCommonStore();
+const userStore = useUserStore();
 
 const { getIsSidenavOpen } = storeToRefs(commonStore);
 
@@ -64,6 +66,7 @@ const navData = [
             >
                 <li>
                     <router-link
+                        @click="userStore.signOut()"
                         :to="{ name: 'Login' }"
                         class="flex items-center p-2 text-gray-900 rounded-lg"
                     >

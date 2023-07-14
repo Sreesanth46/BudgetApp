@@ -1,17 +1,17 @@
 import { defineStore } from "pinia";
 import { verifyAccessToken } from '../api/login.api'
 
+const defaultState = {
+    name: null,
+    email: null,
+    upi: null,
+    phone: null,
+    error: null,
+    isLoggedIn: false
+}
+
 export const useUserStore = defineStore('UserStore', {
-    state: () => {
-        return {
-            name: null,
-            email: null,
-            upi: null,
-            phone: null,
-            error: null,
-            isLoggedIn: false
-        }
-    },
+    state: () => ({ ...defaultState }),
 
     getters: {
         getName: (state) => state.name,
@@ -34,6 +34,12 @@ export const useUserStore = defineStore('UserStore', {
             this.isLoggedIn = true
         },
 
+        signOut() {
+            this.reset()
+            localStorage.removeItem('accessToken')
+            localStorage.removeItem('refreshToken')
+        },
+
         async verifyAccessToken() {
             try {
                 const accessToken = localStorage.getItem('accessToken')
@@ -44,6 +50,10 @@ export const useUserStore = defineStore('UserStore', {
             } catch (err) {
                 this.error = err.response.data.error
             }
+        },
+
+        reset() {
+            Object.assign(this, defaultState);
         }
     },
 })
