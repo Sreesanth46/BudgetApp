@@ -28,7 +28,8 @@ const interceptor = (axios) => {
                 localStorage.setItem('accessToken', res.data.accessToken);
 
             } catch (_error) {
-                return Promise.reject(_error);
+                localStorage.removeItem('accessToken')
+                localStorage.removeItem('refreshToken')
             }
         }
 
