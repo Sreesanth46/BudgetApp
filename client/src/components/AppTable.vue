@@ -1,5 +1,12 @@
 <script setup>
+import { STATES } from "@/utils/globals";
 const props = defineProps(["headers", "data", "keys"]);
+
+const reduceObject = (obj, path) => {
+    return path.reduce((prev, key) => {
+        return prev?.[key];
+    }, obj);
+};
 </script>
 
 <template>
@@ -28,7 +35,13 @@ const props = defineProps(["headers", "data", "keys"]);
                     :key="i"
                 >
                     <td v-for="(key, i) in keys" :key="i" class="px-6 py-4">
-                        {{ item[key] }}
+                        <span v-if="typeof key === 'object'">
+                            {{ reduceObject(item, key) }}
+                        </span>
+                        <span v-else-if="key === 'status'">
+                            {{ STATES[item[key]] }}
+                        </span>
+                        <span v-else>{{ item[key] }}</span>
                     </td>
                 </tr>
             </tbody>
