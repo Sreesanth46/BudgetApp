@@ -10,7 +10,6 @@ onMounted(async () => {
     if (localStorage.getItem("accessToken")) {
         try {
             await userStore.verifyAccessToken();
-            router.push({ name: "Body" });
         } catch (error) {
             localStorage.removeItem("accessToken");
         }
