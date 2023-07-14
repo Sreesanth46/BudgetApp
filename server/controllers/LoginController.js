@@ -6,7 +6,7 @@ const { createError } = require('../error/error')
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "AccessSecretKey"
 const accessTokenExpiry = process.env.ACCESS_TOKEN_EXPIRY || '1d'
 const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "RefreshSecretKey"
-const refreshTokenExpiry = process.env.ACCESS_TOKEN_EXPIRY || '7d'
+const refreshTokenExpiry = process.env.REFRESH_TOKEN_EXPIRY || '7d'
 
 exports.login = async (req, res, next) => {
     const { email, password } = req.body
