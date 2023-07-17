@@ -12,3 +12,5 @@ export const STATES = {
     4: "Payment verified",
     99: "Deleted"
 }
+
+export const ERROR_TIMEOUT = 5000
