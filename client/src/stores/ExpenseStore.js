@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { createExpense, listExpenseByGroup, listAllExpense, updateExpense, deleteExpense } from "@/api/expense.api"
-import { STATUSES } from '@/utils/globals'
+import { ERROR_TIMEOUT, STATUSES } from '@/utils/globals'
 
 export const useExpenseStore = defineStore('ExpenseStore', {
     state: () => {
@@ -72,14 +72,19 @@ export const useExpenseStore = defineStore('ExpenseStore', {
         async deleteExpense(id) {
             try {
                 this.status = STATUSES.LOADING
-                await listExpenseByGroup(id)
+                await deleteExpense(id)
                 await this.fetchExpense()
                 this.status = STATUSES.SUCCESS
 
             } catch (err) {
-                this.status = STATUSES.ERROR
-                this.error = err.response.data.error
+                this.setError(err)
             }
         },
+
+        setError(err) {
+            this.status = STATUSES.ERROR
+            this.error = err.response.data.error
+            setTimeout(() => { this.status = STATUSES.PENDING }, ERROR_TIMEOUT)
+        }
     },
 })
