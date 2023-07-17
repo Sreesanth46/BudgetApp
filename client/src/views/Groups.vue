@@ -41,6 +41,7 @@ const keyValue = ["id", "name", "status", "createdAt"];
                     :id="`group-name-input`"
                     v-model="groupform.name"
                     :name="`Group name`"
+                    required
                 />
                 <AppButton> Create </AppButton>
             </form>
