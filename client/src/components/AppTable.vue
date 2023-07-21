@@ -26,6 +26,7 @@ const reduceObject = (obj, path) => {
                     >
                         {{ header }}
                     </th>
+                    <slot name="th" />
                 </tr>
             </thead>
             <tbody>
@@ -43,6 +44,7 @@ const reduceObject = (obj, path) => {
                         </span>
                         <span v-else>{{ item[key] }}</span>
                     </td>
+                    <slot name="td" :id="item.id" />
                 </tr>
             </tbody>
         </table>

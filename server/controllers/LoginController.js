@@ -1,6 +1,6 @@
 const userService = require('../services/UserService')
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const { createError } = require('../error/error')
 
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "AccessSecretKey"

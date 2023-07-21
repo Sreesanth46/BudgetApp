@@ -6,6 +6,7 @@ import AppTable from "@/components/AppTable.vue";
 import Loader from "@/components/Loader.vue";
 import { STATUSES } from "@/utils/globals";
 import AppButton from "@/components/AppButton.vue";
+import DeleteIcon from "@/icons/DeleteIcon.vue";
 
 const ExpensesStore = useExpenseStore();
 const { getExpenses, getExpenseStatus } = storeToRefs(ExpensesStore);
@@ -40,7 +41,17 @@ const keyValue = [
                 </router-link>
             </div>
         </div>
-        <AppTable :headers="headers" :keys="keyValue" :data="getExpenses" />
+        <AppTable :headers="headers" :keys="keyValue" :data="getExpenses">
+            <template #th> <th>Actions</th> </template>
+            <template #td="tdProp">
+                <td>
+                    <DeleteIcon
+                        @click="ExpensesStore.deleteExpense(tdProp.id)"
+                        class="w-6 h-6 mx-4 hover:text-red-600"
+                    />
+                </td>
+            </template>
+        </AppTable>
         <Loader v-if="getExpenseStatus === STATUSES.LOADING" />
     </div>
 </template>

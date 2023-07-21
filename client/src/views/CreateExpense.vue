@@ -34,16 +34,19 @@ async function handleSubmit() {
                 :id="`expense-name-input`"
                 v-model="expenseForm.name"
                 :name="`Expense name`"
+                required
             />
             <AppInput
                 :id="`expense-amount-input`"
                 v-model="expenseForm.amount"
                 :name="`Expense amount`"
+                required
             />
             <AppInput
                 :id="`expense-groupId-input`"
                 v-model="expenseForm.groupId"
                 :name="`Group ID`"
+                required
             />
             <div class="flex justify-end">
                 <div class="flex w-1/3">
