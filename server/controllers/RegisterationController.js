@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const userService = require('../services/UserService')
 const { createError } = require('../error/error')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 
 const secretKey = process.env.MAIL_TOKEN_SECRET || "MailSecret"
 const expiryTime = process.env.MAIL_TOKEN_EXPIRY || "1h"
