@@ -35,14 +35,11 @@ const keyValue = [
             >
                 Expense
             </h1>
-            <div>
-                <router-link :to="{ name: 'CreateExpense' }">
-                    <AppButton>New Expense</AppButton>
-                </router-link>
-            </div>
         </div>
         <AppTable :headers="headers" :keys="keyValue" :data="getExpenses">
-            <template #th> <th>Actions</th> </template>
+            <template #th>
+                <th>Actions</th>
+            </template>
             <template #td="tdProp">
                 <td>
                     <DeleteIcon
