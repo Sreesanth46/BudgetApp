@@ -7,10 +7,12 @@ import AppButton from "@/components/AppButton.vue";
 
 const ExpensesStore = useExpenseStore();
 
+const props = defineProps(["groupId"]);
+
 const expenseForm = reactive({
     name: "",
     amount: "",
-    groupId: "",
+    groupId: props.groupId,
 });
 
 async function handleSubmit() {
@@ -47,12 +49,13 @@ async function handleSubmit() {
                 v-model="expenseForm.groupId"
                 :name="`Group ID`"
                 required
+                disabled
             />
             <div class="flex justify-end">
-                <div class="flex w-1/3">
-                    <router-link :to="{ name: 'Expenses' }">
+                <div class="flex gap-2">
+                    <router-link :to="{ name: 'Groups' }">
                         <AppButton
-                            class="bg-slate-100 text-slate-800 hover:bg-slate-300"
+                            class="bg-slate-200 text-slate-800 hover:bg-red-500"
                             :type="`button`"
                         >
                             Cancel
