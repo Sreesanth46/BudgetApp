@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { verifyAccessToken } from '../api/login.api'
 
 const defaultState = {
+    id: null,
     name: null,
     email: null,
     upi: null,
@@ -14,6 +15,7 @@ export const useUserStore = defineStore('UserStore', {
     state: () => ({ ...defaultState }),
 
     getters: {
+        getUId: (state) => state.id,
         getName: (state) => state.name,
         getEmail: (state) => state.email,
         getUpi: (state) => state.upi,
@@ -24,6 +26,7 @@ export const useUserStore = defineStore('UserStore', {
 
     actions: {
         setUserDetails(details) {
+            this.id = details.uId || details.id;
             this.name = details.name
             this.email = details.email
             this.upi = details.upi
