@@ -40,10 +40,13 @@ const keyValue = ["id", "name", "status", "createdAt"];
                     <th>Create Expense</th>
                     <th>Actions</th>
                 </template>
-                <template #td="{ id }">
+                <template #td="{ item }">
                     <td class="mx-auto">
                         <router-link
-                            :to="{ name: 'Create Expense', params: { id } }"
+                            :to="{
+                                name: 'Create Expense',
+                                params: { id: item.id },
+                            }"
                         >
                             <CashRegisterIcon
                                 class="w-6 h-6 mx-4 hover:text-blue-600"
@@ -52,7 +55,7 @@ const keyValue = ["id", "name", "status", "createdAt"];
                     </td>
                     <td>
                         <DeleteIcon
-                            @click="GroupStore.deleteGroup(id)"
+                            @click="GroupStore.deleteGroup(item.id)"
                             class="w-6 h-6 mx-4 hover:text-red-600"
                         />
                     </td>
