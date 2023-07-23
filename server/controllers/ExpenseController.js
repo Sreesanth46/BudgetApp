@@ -37,7 +37,7 @@ exports.update = async (req, res, next) => {
     const { id } = req.params
     let expense = await expenseService.findById(id)
     if (!expense) return next(createError(404, 'Expense not found'))
-    if (expense.createdBy !== uId) return next(createError(403, 'You didnt create the expense'))
+    if (expense.createdUser.userId !== uId) return next(createError(403, 'You didnt create the expense'))
 
     expense = await expenseService.update({ name, amount, id })
     return res.status(201).json({ message: 'Expense updated successfully', expense })
