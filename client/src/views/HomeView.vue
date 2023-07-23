@@ -20,7 +20,7 @@ const { getIsSidenavOpen } = storeToRefs(commonStore);
         </div>
         <div
             id="child-router-view"
-            class="flex-grow pt-20 md:p-16 xs:p-8 mx-auto"
+            class="flex-grow pt-20 md:p-16 xs:p-8 xs:pt-20 mx-auto"
         >
             <router-view />
         </div>
