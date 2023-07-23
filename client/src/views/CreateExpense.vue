@@ -1,20 +1,51 @@
 <script setup>
-import { reactive } from "vue";
+import { onMounted, onUnmounted, reactive } from "vue";
 import { resetForm } from "@/utils/helpers";
 import { useExpenseStore } from "@/stores/ExpenseStore";
 import AppInput from "@/components/AppInput.vue";
 import AppButton from "@/components/AppButton.vue";
+import { useRoute, useRouter } from "vue-router";
+import { storeToRefs } from "pinia";
 
+const route = useRoute();
+const router = useRouter();
 const ExpensesStore = useExpenseStore();
+const { getSelectedExpense, getExpenses } = storeToRefs(ExpensesStore);
+
+const props = defineProps(["groupId"]);
+
+onMounted(() => {
+    if (isEditing()) {
+        expenseForm.name = getSelectedExpense.value.name;
+        expenseForm.amount = String(getSelectedExpense.value.amount);
+        expenseForm.groupId = String(getSelectedExpense.value.groupId);
+    }
+});
+
+onUnmounted(() => {
+    ExpensesStore.setSelectedExpense(null);
+});
+
+function isEditing() {
+    return route.name == "Edit Expense";
+}
 
 const expenseForm = reactive({
     name: "",
     amount: "",
-    groupId: "",
+    groupId: props.groupId,
 });
 
 async function handleSubmit() {
-    await ExpensesStore.createExpense(expenseForm);
+    if (isEditing()) {
+        await ExpensesStore.updateExpense(
+            expenseForm,
+            getSelectedExpense.value.id
+        );
+    } else {
+        await ExpensesStore.createExpense(expenseForm);
+    }
+    router.push({ name: "Expenses" });
     resetForm(expenseForm);
 }
 </script>
@@ -47,18 +78,21 @@ async function handleSubmit() {
                 v-model="expenseForm.groupId"
                 :name="`Group ID`"
                 required
+                disabled
             />
             <div class="flex justify-end">
-                <div class="flex w-1/3">
-                    <router-link :to="{ name: 'Expenses' }">
+                <div class="flex gap-2">
+                    <router-link :to="{ name: 'Groups' }">
                         <AppButton
-                            class="bg-slate-100 text-slate-800 hover:bg-slate-300"
+                            class="bg-slate-200 text-slate-800 hover:bg-red-500"
                             :type="`button`"
                         >
                             Cancel
                         </AppButton>
                     </router-link>
-                    <AppButton> Save </AppButton>
+                    <AppButton>
+                        {{ isEditing() ? "Update" : "Save" }}
+                    </AppButton>
                 </div>
             </div>
         </form>

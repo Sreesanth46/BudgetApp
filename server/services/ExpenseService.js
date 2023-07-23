@@ -18,6 +18,10 @@ exports.findById = async (id) => {
                 { id },
                 { status: { [Op.ne]: STATUSES.DELETED } }
             ]
+        },
+        include: {
+            model: GroupMember,
+            as: 'createdUser',
         }
     })
 }

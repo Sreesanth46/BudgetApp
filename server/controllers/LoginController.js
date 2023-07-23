@@ -19,7 +19,7 @@ exports.login = async (req, res, next) => {
 
     try {
         const { password, ...others } = authUser.dataValues
-        authUser = { uId: authUser.id, email: authUser.email, phone: authUser.phone, upi: authUser.upi }
+        authUser = { uId: authUser.id, name: authUser.name, email: authUser.email, phone: authUser.phone, upi: authUser.upi }
         const accessToken = await jwt.sign({ ...authUser }, accessTokenSecret, { expiresIn: `${accessTokenExpiry}` })
         const refreshToken = await jwt.sign({ ...authUser }, refreshTokenSecret, { expiresIn: `${refreshTokenExpiry}` })
         return res.status(200).header("access-Token", accessToken).json({ ...others, accessToken, refreshToken })

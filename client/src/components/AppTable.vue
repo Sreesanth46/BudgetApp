@@ -10,7 +10,7 @@ const reduceObject = (obj, path) => {
 </script>
 
 <template>
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="overflow-x-auto shadow-md sm:rounded-lg">
         <table
             class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
         >
@@ -44,7 +44,7 @@ const reduceObject = (obj, path) => {
                         </span>
                         <span v-else>{{ item[key] }}</span>
                     </td>
-                    <slot name="td" :id="item.id" />
+                    <slot name="td" :item="item" />
                 </tr>
             </tbody>
         </table>

@@ -44,15 +44,34 @@ const routes = [
 			},
 
 			{
+				path: '/groups/create',
+				name: 'Create Group',
+				component: () => import("@views/CreateGroup.vue")
+			},
+
+			{
 				path: '/expenses',
 				name: 'Expenses',
 				component: () => import("@views/Expenses.vue")
 			},
 
 			{
-				path: '/expenses/create',
-				name: 'CreateExpense',
+				path: '/expense/create/:id',
+				name: 'Create Expense',
+				props: route => ({ groupId: route.params.id }),
 				component: () => import("@views/CreateExpense.vue")
+			},
+
+			{
+				path: '/expense/edit',
+				name: 'Edit Expense',
+				component: () => import("@views/CreateExpense.vue")
+			},
+
+			{
+				path: '/expense/split',
+				name: 'Split Expense',
+				component: () => import("@views/SplitExpense.vue")
 			},
 		]
 	},

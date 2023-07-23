@@ -44,7 +44,7 @@ export const useGroupStore = defineStore('GroupStore', {
             }
         },
 
-        async updateGroups(form, id) {
+        async updateGroup(form, id) {
             try {
                 this.status = STATUSES.LOADING
                 await updateGroup(form, id)
@@ -57,7 +57,7 @@ export const useGroupStore = defineStore('GroupStore', {
             }
         },
 
-        async deleteGroups(id) {
+        async deleteGroup(id) {
             try {
                 this.status = STATUSES.LOADING
                 await deleteGroup(id)

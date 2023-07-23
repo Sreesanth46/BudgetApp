@@ -9,7 +9,8 @@ const props = defineProps({
     name: { type: String, required: true },
     id: { type: String, required: true },
     placeholder: { type: String },
-    required: { type: Boolean },
+    required: { type: Boolean, default: false },
+    disabled: { type: Boolean, default: false },
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -29,6 +30,7 @@ function updateInput(event: any) {
             :id="id"
             :placeholder="placeholder"
             :required="required"
+            :disabled="disabled"
             :value="modelValue"
             @input="updateInput"
         />
