@@ -61,6 +61,12 @@ const routes = [
 				props: route => ({ groupId: route.params.id }),
 				component: () => import("@views/CreateExpense.vue")
 			},
+
+			{
+				path: '/expenses/edit',
+				name: 'Edit Expense',
+				component: () => import("@views/CreateExpense.vue")
+			},
 		]
 	},
 ]
