@@ -7,6 +7,7 @@ export const useExpenseStore = defineStore('ExpenseStore', {
         return {
             error: null,
             expenses: null,
+            selected: null,
             status: STATUSES.PENDING
         }
     },
@@ -14,6 +15,7 @@ export const useExpenseStore = defineStore('ExpenseStore', {
     getters: {
         getExpenses: (state) => state.expenses,
         getExpenseStatus: (state) => state.status,
+        getSelectedExpense: (state) => state.selected,
     },
 
     actions: {
@@ -64,8 +66,7 @@ export const useExpenseStore = defineStore('ExpenseStore', {
                 this.status = STATUSES.SUCCESS
 
             } catch (err) {
-                this.status = STATUSES.ERROR
-                this.error = err.response.data.error
+                this.setError(err)
             }
         },
 
@@ -85,6 +86,10 @@ export const useExpenseStore = defineStore('ExpenseStore', {
             this.status = STATUSES.ERROR
             this.error = err.response.data.error
             setTimeout(() => { this.status = STATUSES.PENDING }, ERROR_TIMEOUT)
+        },
+
+        setSelectedExpense(data) {
+            this.selected = data
         }
     },
 })
