@@ -49,6 +49,11 @@ async function handleSubmit() {
 
 <template>
     <div>
+        <h1
+            class="mb-4 text-lg leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
+        >
+            Split Expense
+        </h1>
         <form
             @submit.prevent="handleSubmit()"
             class="space-y-4 md:space-y-4 w-1/2 p-6"
