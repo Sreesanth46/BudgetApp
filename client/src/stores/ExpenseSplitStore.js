@@ -43,7 +43,7 @@ export const useExpenseSplitStore = defineStore('ExpenseSplitStore', {
 
         setError(err) {
             this.status = STATUSES.ERROR
-            this.error = err.response.data.error
+            this.error = err.response.data.message
             setTimeout(() => { this.status = STATUSES.PENDING }, ERROR_TIMEOUT)
         },
 
