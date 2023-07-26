@@ -1,9 +1,7 @@
 <script setup>
 import { onMounted } from "vue";
 import { useUserStore } from "@stores/UserStore";
-import { useRouter } from "vue-router";
 
-const router = useRouter();
 const userStore = useUserStore();
 
 onMounted(async () => {
@@ -13,8 +11,6 @@ onMounted(async () => {
         } catch (error) {
             localStorage.removeItem("accessToken");
         }
-    } else {
-        router.push({ name: "Login" });
     }
 });
 </script>

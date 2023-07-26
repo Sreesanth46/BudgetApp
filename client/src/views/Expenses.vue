@@ -8,6 +8,7 @@ import { STATUSES } from "@/utils/globals";
 import DeleteIcon from "@icons/DeleteIcon.vue";
 import EditIcon from "@icons/EditIcon.vue";
 import { useRouter } from "vue-router";
+import SplitIcon2 from "@/icons/SplitIcon2.vue";
 
 const router = useRouter();
 const ExpensesStore = useExpenseStore();
@@ -20,6 +21,10 @@ onMounted(() => {
 function editExpense(item) {
     ExpensesStore.setSelectedExpense(item);
     router.push({ name: "Edit Expense" });
+}
+
+function splitExpense(id) {
+    router.push({ name: "Split Expense", params: { id } });
 }
 
 const headers = ["id", "name", "amount", "status", "Created At", "Created By"];
@@ -55,6 +60,10 @@ const keyValue = [
                     <EditIcon
                         @click="editExpense(item)"
                         class="w-6 h-6 mx-4 hover:text-blue-600"
+                    />
+                    <SplitIcon2
+                        @click="splitExpense(item.id)"
+                        class="w-6 h-6 mx-4 hover:fill-blue-600"
                     />
                 </td>
             </template>

@@ -18,6 +18,17 @@ exports.create = async (req, res, next) => {
     }
 }
 
+exports.list = async (req, res, next) => {
+    const { groupId } = req.params
+    const { uId } = req.user
+
+    let groupMember = await groupMemberService.findByUserIdAndGroupId({ userId: uId, groupId })
+    if (!groupMember) return next(createError(404, 'You are not a member of this group'))
+
+    groupMember = await groupMemberService.findByGroupId(groupId)
+    return res.status(200).json(groupMember)
+}
+
 exports.delete = async (req, res, next) => {
     const { id } = req.params
     const { uId } = req.user

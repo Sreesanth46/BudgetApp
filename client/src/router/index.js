@@ -69,8 +69,9 @@ const routes = [
 			},
 
 			{
-				path: '/expense/split',
+				path: '/expense/:id/split',
 				name: 'Split Expense',
+				props: route => ({ expenseId: route.params.id }),
 				component: () => import("@views/SplitExpense.vue")
 			},
 		]

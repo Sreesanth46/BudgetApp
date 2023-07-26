@@ -5,9 +5,9 @@ const GroupMember = db.groupMembers
 const { Op } = require('sequelize');
 const { STATUSES } = require('../constants/globals');
 
-exports.save = async ({ expenseId, split }) => {
+exports.save = async ({ expenseId, splits }) => {
     try {
-        const expense = await ExpenseSplit.bulkCreate(split)
+        const expense = await ExpenseSplit.bulkCreate(splits)
         await Expense.update({
             status: 2,
         },

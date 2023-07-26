@@ -28,7 +28,7 @@ export const useExpenseStore = defineStore('ExpenseStore', {
 
             } catch (err) {
                 this.status = STATUSES.ERROR
-                this.error = err.response.data.error
+                this.error = err.response.data.message
             }
         },
 
@@ -41,7 +41,7 @@ export const useExpenseStore = defineStore('ExpenseStore', {
 
             } catch (err) {
                 this.status = STATUSES.ERROR
-                this.error = err.response.data.error
+                this.error = err.response.data.message
             }
         },
 
@@ -54,7 +54,7 @@ export const useExpenseStore = defineStore('ExpenseStore', {
 
             } catch (err) {
                 this.status = STATUSES.ERROR
-                this.error = err.response.data.error
+                this.error = err.response.data.message
             }
         },
 
@@ -84,7 +84,7 @@ export const useExpenseStore = defineStore('ExpenseStore', {
 
         setError(err) {
             this.status = STATUSES.ERROR
-            this.error = err.response.data.error
+            this.error = err.response.data.message
             setTimeout(() => { this.status = STATUSES.PENDING }, ERROR_TIMEOUT)
         },
 

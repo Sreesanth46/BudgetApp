@@ -27,7 +27,7 @@ export const useGroupStore = defineStore('GroupStore', {
 
             } catch (err) {
                 this.status = STATUSES.ERROR
-                this.error = err.response.data.error
+                this.error = err.response.data.message
             }
         },
 
@@ -40,7 +40,7 @@ export const useGroupStore = defineStore('GroupStore', {
 
             } catch (err) {
                 this.status = STATUSES.ERROR
-                this.error = err.response.data.error
+                this.error = err.response.data.message
             }
         },
 
@@ -53,7 +53,7 @@ export const useGroupStore = defineStore('GroupStore', {
 
             } catch (err) {
                 this.status = STATUSES.ERROR
-                this.error = err.response.data.error
+                this.error = err.response.data.message
             }
         },
 
@@ -66,7 +66,7 @@ export const useGroupStore = defineStore('GroupStore', {
 
             } catch (err) {
                 this.status = STATUSES.ERROR
-                this.error = err.response.data.error
+                this.error = err.response.data.message
             }
         },
 
