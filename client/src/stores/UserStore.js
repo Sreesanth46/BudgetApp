@@ -1,5 +1,8 @@
 import { defineStore } from "pinia";
-import { verifyAccessToken } from '../api/login.api'
+import { verifyAccessToken } from '@/api/login.api'
+import { signUp, register } from "@/api/register.api";
+import { ERROR_TIMEOUT, STATUSES } from "@/utils/globals";
+
 
 const defaultState = {
     id: null,
@@ -8,7 +11,8 @@ const defaultState = {
     upi: null,
     phone: null,
     error: null,
-    isLoggedIn: false
+    isLoggedIn: false,
+    status: STATUSES.PENDING
 }
 
 export const useUserStore = defineStore('UserStore', {
@@ -21,7 +25,8 @@ export const useUserStore = defineStore('UserStore', {
         getUpi: (state) => state.upi,
         getPhone: (state) => state.phone,
         getError: (state) => state.error,
-        getIsLoggedIn: (state) => state.isLoggedIn
+        getIsLoggedIn: (state) => state.isLoggedIn,
+        getStatus: (state) => state.status
     },
 
     actions: {
@@ -51,8 +56,34 @@ export const useUserStore = defineStore('UserStore', {
                 this.setUserDetails(user.data)
                 this.setLoggedIn()
             } catch (err) {
-                this.error = err.response.data.error
+                this.error = err.response.data.message
             }
+        },
+
+        async register(form) {
+            try {
+                this.status = STATUSES.LOADING
+                await register(form)
+                this.status = STATUSES.SUCCESS
+            } catch (err) {
+                this.setError(err);
+            }
+        },
+
+        async signUp(form, token) {
+            try {
+                this.status = STATUSES.LOADING
+                await signUp(form, token)
+                this.status = STATUSES.SUCCESS
+            } catch (err) {
+                this.setError(err);
+            }
+        },
+
+        setError(err) {
+            this.status = STATUSES.ERROR
+            this.error = err.response.data.message
+            setTimeout(() => { this.status = STATUSES.PENDING }, ERROR_TIMEOUT)
         },
 
         reset() {
