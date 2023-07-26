@@ -5,17 +5,17 @@ const { createError } = require('../error/error')
 const { STATUSES } = require('../constants/globals');
 
 exports.create = async (req, res, next) => {
-    const { expenseId, groupId, split } = req.body;
+    const { expenseId, groupId, splits } = req.body;
     const { uId } = req.user
 
     const expenses = await expenseService.findById(expenseId)
-    if (expenses.groupId !== groupId) return next(createError(400, 'Given expense is not created for the group'))
+    // if (expenses.groupId !== groupId) return next(createError(400, 'Given expense is not created for the group'))
 
-    const groupMembers = await groupMemberService.findByGroupId(groupId)
+    const groupMembers = await groupMemberService.findByGroupId(expenses.groupId)
     const memberIds = groupMembers.map(members => members.groupMemberId)
     let unknownMembers = []
     try {
-        split.forEach(element => {
+        splits.forEach(element => {
             if (memberIds.includes(element.groupMemberId)) unknownMembers.push(element.groupMemberId)
         });
     } catch (err) {
@@ -24,7 +24,7 @@ exports.create = async (req, res, next) => {
     if (unknownMembers.length !== 0) return next(createError(400, `Members ${unknownMembers} does not belong to the group`))
     // TODO check if the memeber exists in the group -- need to verify
 
-    const { expense, error } = await expenseSplitService.save({ expenseId, split })
+    const { expense, error } = await expenseSplitService.save({ expenseId, splits })
     if (error) return next(createError(400, 'Something went wrong'))
 
     return res.status(200).json({ message: "success", ...expense })
