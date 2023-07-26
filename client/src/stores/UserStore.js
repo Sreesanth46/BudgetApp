@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { verifyAccessToken } from '@/api/login.api'
 import { signUp, register } from "@/api/register.api";
+import { search, update } from "@/api/user.api";
 import { ERROR_TIMEOUT, STATUSES } from "@/utils/globals";
 
 
@@ -12,6 +13,7 @@ const defaultState = {
     phone: null,
     error: null,
     isLoggedIn: false,
+    users: null,
     status: STATUSES.PENDING
 }
 
@@ -26,7 +28,8 @@ export const useUserStore = defineStore('UserStore', {
         getPhone: (state) => state.phone,
         getError: (state) => state.error,
         getIsLoggedIn: (state) => state.isLoggedIn,
-        getStatus: (state) => state.status
+        getStatus: (state) => state.status,
+        getUserList: (state) => state.users,
     },
 
     actions: {
@@ -74,6 +77,26 @@ export const useUserStore = defineStore('UserStore', {
             try {
                 this.status = STATUSES.LOADING
                 await signUp(form, token)
+                this.status = STATUSES.SUCCESS
+            } catch (err) {
+                this.setError(err);
+            }
+        },
+
+        async searchUser(query) {
+            try {
+                this.status = STATUSES.LOADING
+                await search(query)
+                this.status = STATUSES.SUCCESS
+            } catch (err) {
+                this.setError(err);
+            }
+        },
+
+        async updateUser(form) {
+            try {
+                this.status = STATUSES.LOADING
+                await update(form)
                 this.status = STATUSES.SUCCESS
             } catch (err) {
                 this.setError(err);
