@@ -6,6 +6,8 @@ router.post('/', verifyToken, expenseController.create)
 
 router.get('/group/:groupId', verifyToken, expenseController.list)
 
+router.get('/id/:id', verifyToken, expenseController.findById)
+
 router.get('/all', verifyToken, expenseController.listAll)
 
 router.put('/:id', verifyToken, expenseController.update)

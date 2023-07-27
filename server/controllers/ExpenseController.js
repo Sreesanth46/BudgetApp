@@ -24,6 +24,13 @@ exports.list = async (req, res, next) => {
     return res.status(200).json(expense)
 }
 
+exports.findById = async (req, res, next) => {
+    const { id } = req.params
+
+    const expense = await expenseService.findById(id)
+    return res.status(200).json(expense)
+}
+
 exports.listAll = async (req, res, next) => {
     const { uId } = req.user
     try {
