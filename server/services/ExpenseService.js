@@ -74,8 +74,8 @@ exports.listAllByCreatedBy = async (id) => {
 
 /**
  * 
- * @param { string } name Expense Name
- * @param { number } amount amount of the expense
+ * @param {string} name Expense Name
+ * @param {number} amount amount of the expense
  * @param {number} id of the user
  */
 exports.update = async ({ name, amount, id }) => {
