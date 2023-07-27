@@ -1,6 +1,7 @@
 const db = require('../models')
 const GroupMember = db.groupMembers
 const Group = db.groupMaster
+const Users = db.userMaster
 const { Op } = require('sequelize')
 const { STATUSES } = require('../constants/globals');
 
@@ -32,6 +33,11 @@ exports.findByGroupId = async (groupId) => {
                 { groupId },
                 { status: { [Op.ne]: STATUSES.DELETED } }
             ]
+        },
+        include: {
+            model: Users,
+            as: 'user',
+            attributes: { exclude: ['password'] }
         }
     })
 }
