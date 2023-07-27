@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { createGroup, listGroup, updateGroup, deleteGroup } from '@/api/group.api'
-import { STATUSES } from '@/utils/globals'
+import { ERROR_TIMEOUT, STATUSES } from '@/utils/globals'
 
 export const useGroupStore = defineStore('GroupStore', {
     state: () => {
@@ -74,7 +74,7 @@ export const useGroupStore = defineStore('GroupStore', {
             setTimeout(() => {
                 this.error = null
                 this.status = STATUSES.PENDING
-            }, 10000)
+            }, ERROR_TIMEOUT)
         }
     },
 })
