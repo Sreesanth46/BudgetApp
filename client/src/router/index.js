@@ -88,7 +88,7 @@ router.beforeEach(async (to, from) => {
 	const { Authenticated } = to.meta;
 	const userStore = useUserStore();
 	const { getIsLoggedIn } = storeToRefs(userStore)
-	if (Authenticated && !getIsLoggedIn) return { name: 'Login' }
+	if (Authenticated && !getIsLoggedIn.value) return { name: 'Login' }
 })
 
 export default router
