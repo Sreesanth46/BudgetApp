@@ -26,9 +26,12 @@ exports.list = async (req, res, next) => {
 
 exports.listAll = async (req, res, next) => {
     const { uId } = req.user
-    const expense = await expenseService.listAllByCreatedBy(uId)
-
-    return res.status(200).json(expense)
+    try {
+        const expense = await expenseService.listAllByCreatedBy(uId)
+        return res.status(200).json(expense)
+    } catch (err) {
+        return next(createError(400, `An unexpected error occurred`))
+    }
 }
 
 exports.update = async (req, res, next) => {
