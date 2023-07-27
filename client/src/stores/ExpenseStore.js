@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { createExpense, listExpenseByGroup, listAllExpense, updateExpense, deleteExpense } from "@/api/expense.api"
+import { createExpense, listExpenseByGroup, findExpenseById, listAllExpense, updateExpense, deleteExpense } from "@/api/expense.api"
 import { ERROR_TIMEOUT, STATUSES } from '@/utils/globals'
 
 export const useExpenseStore = defineStore('ExpenseStore', {
@@ -7,6 +7,7 @@ export const useExpenseStore = defineStore('ExpenseStore', {
         return {
             error: null,
             expenses: null,
+            expenseById: null,
             selected: null,
             status: STATUSES.PENDING
         }
@@ -16,32 +17,43 @@ export const useExpenseStore = defineStore('ExpenseStore', {
         getExpenses: (state) => state.expenses,
         getExpenseStatus: (state) => state.status,
         getSelectedExpense: (state) => state.selected,
+        getExpenseById: (state) => state.expenseById
     },
 
     actions: {
         async fetchExpense() {
             try {
                 this.status = STATUSES.LOADING
-                const expenses = await listAllExpense()
-                this.expenses = expenses.data
+                const res = await listAllExpense()
+                this.expenses = res.data
                 this.status = STATUSES.SUCCESS
 
             } catch (err) {
-                this.status = STATUSES.ERROR
-                this.error = err.response.data.message
+                this.setError(err)
             }
         },
 
         async fetchExpenseByGroupId(groupId) {
             try {
                 this.status = STATUSES.LOADING
-                const expenses = await listExpenseByGroup(groupId)
-                this.expenses = expenses.data
+                const res = await listExpenseByGroup(groupId)
+                this.expenses = res.data
                 this.status = STATUSES.SUCCESS
 
             } catch (err) {
-                this.status = STATUSES.ERROR
-                this.error = err.response.data.message
+                this.setError(err)
+            }
+        },
+
+        async fetchExpenseById(id) {
+            try {
+                this.status = STATUSES.LOADING
+                const res = await findExpenseById(id)
+                this.expenseById = res.data
+                this.status = STATUSES.SUCCESS
+
+            } catch (err) {
+                this.setError(err)
             }
         },
 
@@ -53,8 +65,7 @@ export const useExpenseStore = defineStore('ExpenseStore', {
                 this.status = STATUSES.SUCCESS
 
             } catch (err) {
-                this.status = STATUSES.ERROR
-                this.error = err.response.data.message
+                this.setError(err)
             }
         },
 
