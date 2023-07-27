@@ -46,6 +46,11 @@ exports.listByCreatedBy = async (createdBy) => {
     })
 }
 
+
+/**
+ * 
+ * @param {number} id of the user
+ */
 exports.listAllByCreatedBy = async (id) => {
     return Expense.findAll({
         where: {
@@ -67,6 +72,12 @@ exports.listAllByCreatedBy = async (id) => {
     })
 }
 
+/**
+ * 
+ * @param { string } name Expense Name
+ * @param { number } amount amount of the expense
+ * @param {number} id of the user
+ */
 exports.update = async ({ name, amount, id }) => {
     return Expense.update({
         name,
