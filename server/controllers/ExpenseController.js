@@ -24,11 +24,21 @@ exports.list = async (req, res, next) => {
     return res.status(200).json(expense)
 }
 
+exports.findById = async (req, res, next) => {
+    const { id } = req.params
+
+    const expense = await expenseService.findById(id)
+    return res.status(200).json(expense)
+}
+
 exports.listAll = async (req, res, next) => {
     const { uId } = req.user
-    const expense = await expenseService.listAllByCreatedBy(uId)
-
-    return res.status(200).json(expense)
+    try {
+        const expense = await expenseService.listAllByCreatedBy(uId)
+        return res.status(200).json(expense)
+    } catch (err) {
+        return next(createError(400, `An unexpected error occurred`))
+    }
 }
 
 exports.update = async (req, res, next) => {

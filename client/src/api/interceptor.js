@@ -19,7 +19,8 @@ const interceptor = (axios) => {
     axios.interceptors.response.use((res) => {
         return res;
     }, async (err) => {
-        if (err.response.status === 401) {
+        console.log(err.response);
+        if (err.response.status === 401 && err.response.data?.errorCode !== 5000) {
             try {
                 const refreshToken = { refreshToken: localStorage.getItem('refreshToken') }
                 if (!refreshToken) return Promise.reject(err)
@@ -28,9 +29,11 @@ const interceptor = (axios) => {
                 localStorage.setItem('accessToken', res.data.accessToken);
 
             } catch (_error) {
-                localStorage.removeItem('accessToken')
-                localStorage.removeItem('refreshToken')
+                return Promise.reject(err);
             }
+        } else {
+            localStorage.removeItem('accessToken')
+            localStorage.removeItem('refreshToken')
         }
 
         return Promise.reject(err);

@@ -71,7 +71,7 @@ const routes = [
 			{
 				path: '/expense/:id/split',
 				name: 'Split Expense',
-				props: route => ({ expenseId: route.params.id }),
+				props: route => ({ expenseId: parseInt(route.params.id) }),
 				component: () => import("@views/SplitExpense.vue")
 			},
 		]
@@ -88,7 +88,7 @@ router.beforeEach(async (to, from) => {
 	const { Authenticated } = to.meta;
 	const userStore = useUserStore();
 	const { getIsLoggedIn } = storeToRefs(userStore)
-	if (Authenticated && !getIsLoggedIn) return { name: 'Login' }
+	if (Authenticated && !getIsLoggedIn.value && !localStorage.getItem('accessToken')) return { name: 'Login' }
 })
 
 export default router

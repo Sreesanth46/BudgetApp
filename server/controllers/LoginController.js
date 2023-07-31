@@ -40,7 +40,7 @@ exports.verifyAccessToken = async (req, res, next) => {
 exports.refreshAccessToken = async (req, res, next) => {
     const { refreshToken } = req.body
     jwt.verify(refreshToken, refreshTokenSecret, async (err, user) => {
-        if (err) return next(createError(401, 'Token is invalid'))
+        if (err) return res.status(401).json({ message: "Refresh token is invalid", errorCode: 5000 })
         const { iat, exp, ...rest } = user
         const accessToken = await jwt.sign({ ...rest }, accessTokenSecret, { expiresIn: `${accessTokenExpiry}` })
         return res.status(200).json({ ...rest, accessToken })

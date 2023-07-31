@@ -1,5 +1,5 @@
 <script setup>
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { useExpenseSplitStore } from "@stores/ExpenseSplitStore";
 import Loader from "@components/Loader.vue";
 import AppInput from "@components/AppInput.vue";
@@ -9,11 +9,24 @@ import { STATUSES } from "@/utils/globals";
 import { resetForm } from "@/utils/helpers";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
+import AppSearchDropdown from "@components/AppSearchDropdown.vue";
+import { useExpenseStore } from "@stores/ExpenseStore";
+import { useGroupMemberStore } from "@stores/GroupMemberStore";
 
 const router = useRouter();
+const ExpenseStore = useExpenseStore();
+const GroupMemberStore = useGroupMemberStore();
 const ExpenseSplitStore = useExpenseSplitStore();
+const { getExpenseById } = storeToRefs(ExpenseStore);
+const { getMemberList } = storeToRefs(GroupMemberStore);
 const { getExpenseSplitStatus } = storeToRefs(ExpenseSplitStore);
-const props = defineProps(["expenseId"]);
+const props = defineProps({
+    expenseId: { type: Number },
+});
+
+ExpenseStore.fetchExpenseById(props.expenseId).then(() => {
+    GroupMemberStore.fetchGroupMembers(getExpenseById.value.groupId);
+});
 
 const expenseSplitForm = reactive({
     expenseId: props.expenseId,
@@ -25,6 +38,8 @@ const expenseSplitForm = reactive({
         },
     ],
 });
+const optionKeys = ["user", "name"];
+const valueKeys = ["userId"];
 
 function addNewSplit() {
     expenseSplitForm.splits.push({
@@ -44,6 +59,17 @@ async function handleSubmit() {
     resetForm(expenseSplitForm);
     if (getExpenseSplitStatus == STATUSES.SUCCESS)
         router.push({ name: "Expenses" });
+}
+
+function filterUser(search) {
+    return getMemberList.value.filter((member) => {
+        if (
+            member.user.name.includes(search) ||
+            member.user.email.includes(search) ||
+            member.user.phone.includes(search)
+        )
+            return member;
+    });
 }
 </script>
 
@@ -68,11 +94,14 @@ async function handleSubmit() {
             <div v-for="(split, index) in expenseSplitForm.splits">
                 <div :key="index" class="flex items-center w-full">
                     <div class="w-full place-self-start">
-                        <AppInput
+                        <app-search-dropdown
+                            v-model="split.groupMemberId"
                             :id="`expense-split-member-${index}`"
                             :name="`Group Member`"
-                            v-model="split.groupMemberId"
-                            required
+                            :placeholder="`Searchable`"
+                            :options="filterUser(split.groupMemberId)"
+                            :optionKeys="optionKeys"
+                            :valueKeys="valueKeys"
                         />
                         <AppInput
                             :id="`expense-split-amount-${index}`"

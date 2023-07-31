@@ -13,7 +13,7 @@ const defaultState = {
     phone: null,
     error: null,
     isLoggedIn: false,
-    users: null,
+    users: [],
     status: STATUSES.PENDING
 }
 
@@ -86,7 +86,8 @@ export const useUserStore = defineStore('UserStore', {
         async searchUser(query) {
             try {
                 this.status = STATUSES.LOADING
-                await search(query)
+                const res = await search(query)
+                this.users = res.data
                 this.status = STATUSES.SUCCESS
             } catch (err) {
                 this.setError(err);

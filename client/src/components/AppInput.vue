@@ -4,7 +4,7 @@ import { PropType } from "vue";
 type TInput = "email" | "password" | "number" | "date" | "search";
 
 const props = defineProps({
-    modelValue: { type: String, required: true, default: "" },
+    modelValue: { type: [String, Number], required: true, default: "" },
     inputType: { type: String as PropType<TInput>, default: "text" },
     name: { type: String, required: true },
     id: { type: String, required: true },
