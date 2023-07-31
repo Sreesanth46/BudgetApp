@@ -9,7 +9,7 @@ const props = defineProps({
     disabled: { type: Boolean, default: false },
     valueKeys: { type: Array, default: ["id"] },
     optionKeys: { type: Array, default: [] },
-    modelValue: { type: String, required: true, default: "" },
+    modelValue: { type: [String, Number], required: true, default: "" },
     placeholder: { type: String },
 });
 
@@ -51,51 +51,49 @@ function clicked(option) {
 </script>
 
 <template>
-    <form>
-        <div class="flex flex-col gap-4">
-            <div class="relative w-full">
-                <label
-                    :for="name"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >{{ name }}</label
-                >
-                <input
-                    type="search"
-                    :placeholder="placeholder"
-                    :value="searchData"
-                    @input="updateInput"
-                    @keyup="() => emit('keyup')"
-                    @focus="() => (isFocused = true)"
-                    @blur="blured"
-                    class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-                    required
-                />
-            </div>
-            <div
-                id="dropdown"
-                class="w-full z-10 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700"
+    <div class="relative flex flex-col gap-4 mb-4">
+        <div class="relative w-full">
+            <label
+                :for="name"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >{{ name }}</label
             >
-                <ul
-                    class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                    aria-labelledby="dropdown-button"
-                    v-if="options.length > 0 && isFocused"
-                >
-                    <li v-for="option in options" :key="option.id">
-                        <button
-                            @click="clicked(option)"
-                            type="button"
-                            class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >
-                            <span v-if="optionKeys.length > 1">
-                                {{ reduceObject(option, optionKeys) }}
-                            </span>
-                            <span v-else>{{ option[optionKeys] }}</span>
-                        </button>
-                    </li>
-                </ul>
-            </div>
+            <input
+                type="search"
+                :placeholder="placeholder"
+                :value="searchData"
+                @input="updateInput"
+                @keyup="() => emit('keyup')"
+                @focus="() => (isFocused = true)"
+                @blur="blured"
+                class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
+                required
+            />
         </div>
-    </form>
+        <div
+            id="dropdown"
+            class="absolute mt-20 w-full bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700"
+        >
+            <ul
+                class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                aria-labelledby="dropdown-button"
+                v-if="options.length > 0 && isFocused"
+            >
+                <li v-for="option in options" :key="option.id">
+                    <button
+                        @click="clicked(option)"
+                        type="button"
+                        class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    >
+                        <span v-if="optionKeys.length > 1">
+                            {{ reduceObject(option, optionKeys) }}
+                        </span>
+                        <span v-else>{{ option[optionKeys] }}</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
 </template>
 
 // last working - https://paste.sreesanth.me/udaxorofiq.django
