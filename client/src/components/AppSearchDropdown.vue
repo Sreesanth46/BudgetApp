@@ -22,11 +22,11 @@ const reduceObject = (obj, path) => {
     }, obj);
 };
 
-const emit = defineEmits(["update:modelValue", "keyup", "search"]);
+const emit = defineEmits(["update:modelValue", "keyup"]);
 
 function updateInput(event) {
     searchData.value = event.target.value;
-    emit("search", event.target.value);
+    emit("update:modelValue", event.target.value);
 }
 
 function blured() {
