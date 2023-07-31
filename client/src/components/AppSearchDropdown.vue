@@ -2,15 +2,19 @@
 import { ref } from "vue";
 
 const props = defineProps({
-    placeholder: { type: String },
-    modelValue: { type: String, required: true, default: "" },
-    data: { type: Array, default: [] },
-    name: { type: String },
-    keys: { type: Array, default: [] },
     id: { type: String },
+    name: { type: String },
+    options: { type: Array, default: [] },
+    required: { type: Boolean, default: false },
+    disabled: { type: Boolean, default: false },
+    valueKeys: { type: Array, default: ["id"] },
+    optionKeys: { type: Array, default: [] },
+    modelValue: { type: String, required: true, default: "" },
+    placeholder: { type: String },
 });
 
 const isFocused = ref(false);
+const searchData = ref("");
 
 const reduceObject = (obj, path) => {
     return path.reduce((prev, key) => {
@@ -18,10 +22,11 @@ const reduceObject = (obj, path) => {
     }, obj);
 };
 
-const emit = defineEmits(["update:modelValue", "keyup"]);
+const emit = defineEmits(["update:modelValue", "keyup", "search"]);
 
 function updateInput(event) {
-    emit("update:modelValue", event.target.value);
+    searchData.value = event.target.value;
+    emit("search", event.target.value);
 }
 
 function blured() {
@@ -31,12 +36,17 @@ function blured() {
 }
 
 function clicked(option) {
-    if (props.keys.length > 1) {
-        const value = reduceObject(option, props.keys);
-        emit("update:modelValue", value);
-    } else {
-        emit("update:modelValue", option[props.keys]);
-    }
+    const searchValue =
+        props.optionKeys.length > 1
+            ? reduceObject(option, props.optionKeys)
+            : option[props.optionKeys];
+    const emitValue =
+        props.valueKeys.length > 1
+            ? reduceObject(option, props.valueKeys)
+            : option[props.valueKeys];
+
+    searchData.value = searchValue;
+    emit("update:modelValue", emitValue);
 }
 </script>
 
@@ -52,7 +62,7 @@ function clicked(option) {
                 <input
                     type="search"
                     :placeholder="placeholder"
-                    :value="modelValue"
+                    :value="searchData"
                     @input="updateInput"
                     @keyup="() => emit('keyup')"
                     @focus="() => (isFocused = true)"
@@ -68,18 +78,18 @@ function clicked(option) {
                 <ul
                     class="py-2 text-sm text-gray-700 dark:text-gray-200"
                     aria-labelledby="dropdown-button"
-                    v-if="data.length > 0 && isFocused"
+                    v-if="options.length > 0 && isFocused"
                 >
-                    <li v-for="item in data" :key="item.id">
+                    <li v-for="option in options" :key="option.id">
                         <button
-                            @click="clicked(item)"
+                            @click="clicked(option)"
                             type="button"
                             class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                         >
-                            <span v-if="keys.length > 1">
-                                {{ reduceObject(item, keys) }}
+                            <span v-if="optionKeys.length > 1">
+                                {{ reduceObject(option, optionKeys) }}
                             </span>
-                            <span v-else>{{ item[keys] }}</span>
+                            <span v-else>{{ option[optionKeys] }}</span>
                         </button>
                     </li>
                 </ul>
@@ -87,3 +97,5 @@ function clicked(option) {
         </div>
     </form>
 </template>
+
+// last working - https://paste.sreesanth.me/udaxorofiq.django
