@@ -23,6 +23,21 @@ const emit = defineEmits(["update:modelValue", "keyup"]);
 function updateInput(event) {
     emit("update:modelValue", event.target.value);
 }
+
+function blured() {
+    setTimeout(() => {
+        isFocused.value = false;
+    }, 180);
+}
+
+function clicked(option) {
+    if (props.keys.length > 1) {
+        const value = reduceObject(option, props.keys);
+        emit("update:modelValue", value);
+    } else {
+        emit("update:modelValue", option[props.keys]);
+    }
+}
 </script>
 
 <template>
@@ -41,7 +56,7 @@ function updateInput(event) {
                     @input="updateInput"
                     @keyup="() => emit('keyup')"
                     @focus="() => (isFocused = true)"
-                    @blur="() => (isFocused = false)"
+                    @blur="blured"
                     class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                     required
                 />
@@ -57,6 +72,7 @@ function updateInput(event) {
                 >
                     <li v-for="item in data" :key="item.id">
                         <button
+                            @click="clicked(item)"
                             type="button"
                             class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                         >
