@@ -31,7 +31,7 @@ const interceptor = (axios) => {
             } catch (_error) {
                 return Promise.reject(err);
             }
-        } else {
+        } else if (err.response.data?.errorCode === 5000){
             localStorage.removeItem('accessToken')
             localStorage.removeItem('refreshToken')
         }
