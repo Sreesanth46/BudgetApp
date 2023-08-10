@@ -1,8 +1,10 @@
 <script setup>
 import { reactive } from "vue";
 import { signUp } from "@/api/register.api";
+import { useRouter } from "vue-router";
 
 const props = defineProps(["token"]);
+const router = useRouter();
 
 const registerForm = reactive({
     name: "",
@@ -12,7 +14,8 @@ const registerForm = reactive({
 
 const handleSubmit = async () => {
     try {
-        const res = await signUp(registerForm, props.token);
+        await signUp(registerForm, props.token);
+        router.push({ name: "Login" });
     } catch (error) {
         console.log("Error signing up" + error);
     }

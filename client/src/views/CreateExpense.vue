@@ -55,7 +55,7 @@ async function handleSubmit() {
         <h1
             class="mb-4 text-lg leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
         >
-            New Expense
+            {{ isEditing() ? "Edit" : "New" }} Expense
         </h1>
         <form
             @submit.prevent="handleSubmit()"
@@ -82,7 +82,9 @@ async function handleSubmit() {
             />
             <div class="flex justify-end">
                 <div class="flex gap-2">
-                    <router-link :to="{ name: 'Groups' }">
+                    <router-link
+                        :to="{ name: isEditing() ? 'Expenses' : 'Groups' }"
+                    >
                         <AppButton
                             class="bg-slate-200 text-slate-800 hover:bg-red-500"
                             :type="`button`"

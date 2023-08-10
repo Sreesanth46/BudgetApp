@@ -55,15 +55,15 @@ const keyValue = [
                 <td class="flex">
                     <DeleteIcon
                         @click="ExpensesStore.deleteExpense(item.id)"
-                        class="w-6 h-6 mx-4 hover:text-red-600"
+                        class="w-6 h-6 mx-4 mt-2 hover:text-red-600"
                     />
                     <EditIcon
                         @click="editExpense(item)"
-                        class="w-6 h-6 mx-4 hover:text-blue-600"
+                        class="w-6 h-6 mx-4 mt-2 hover:text-blue-600"
                     />
                     <SplitIcon2
                         @click="splitExpense(item.id)"
-                        class="w-6 h-6 mx-4 hover:fill-blue-600"
+                        class="w-6 h-6 mx-4 mt-2 hover:fill-blue-600"
                     />
                 </td>
             </template>
