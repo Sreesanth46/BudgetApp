@@ -62,6 +62,7 @@ const keyValue = [
                         class="w-6 h-6 mx-4 mt-2 hover:text-blue-600"
                     />
                     <SplitIcon2
+                        v-if="item.status !== 2"
                         @click="splitExpense(item.id)"
                         class="w-6 h-6 mx-4 mt-2 hover:fill-blue-600"
                     />
