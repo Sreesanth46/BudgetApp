@@ -5,6 +5,7 @@
     "database": "",
     "host": "localhost",
     "dialect": "mysql",
+    "use_env_variable": "DATABASE_URL",
     "define": {
       "freezeTableName": true,
       "underscored": true
@@ -16,6 +17,7 @@
     "database": "database_test",
     "host": "127.0.0.1",
     "dialect": "mysql",
+    "use_env_variable": "DATABASE_URL",
     "define": {
       "freezeTableName": true,
       "underscored": true
@@ -27,6 +29,7 @@
     "database": "database_production",
     "host": "127.0.0.1",
     "dialect": "mysql",
+    "use_env_variable": "DATABASE_URL",
     "define": {
       "freezeTableName": true,
       "underscored": true
