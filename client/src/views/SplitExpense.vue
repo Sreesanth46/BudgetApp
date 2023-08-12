@@ -56,9 +56,10 @@ function deleteSplit(index) {
 
 async function handleSubmit() {
     await ExpenseSplitStore.createExpenseSplit(expenseSplitForm);
-    resetForm(expenseSplitForm);
-    if (getExpenseSplitStatus == STATUSES.SUCCESS)
+    if (getExpenseSplitStatus.value === STATUSES.SUCCESS) {
+        resetForm(expenseSplitForm);
         router.push({ name: "Expenses" });
+    }
 }
 
 function filterUser(search) {
