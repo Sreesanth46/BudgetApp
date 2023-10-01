@@ -1,4 +1,5 @@
 import { refreshAccessToken } from './login.api';
+import { useUserStore } from '@stores/UserStore'
 const publicRoutes = ['register', 'signup', 'login']
 
 const interceptor = (axios) => {
@@ -19,19 +20,27 @@ const interceptor = (axios) => {
     axios.interceptors.response.use((res) => {
         return res;
     }, async (err) => {
-        console.log(err.response);
-        if (err.response.status === 401 && err.response.data?.errorCode !== 5000) {
+        const originalRequest = err.config;
+        if (err.response.status === 401 && err.response.data?.errorCode !== 5000 && !originalRequest._retry) {
             try {
                 const refreshToken = { refreshToken: localStorage.getItem('refreshToken') }
                 if (!refreshToken) return Promise.reject(err)
 
                 const res = await refreshAccessToken({ refreshToken })
-                localStorage.setItem('accessToken', res.data.accessToken);
+                const { accessToken } = res.data
+                localStorage.setItem('accessToken', accessToken);
+
+                originalRequest._retry = true
+                axios.default.headers.common["Authorization"] = "Bearer " + accessToken
+                return interceptor(originalRequest)
 
             } catch (_error) {
+                const userStore = useUserStore();
+                userStore.reset();
+                localStorage.clear();
                 return Promise.reject(err);
             }
-        } else if (err.response.data?.errorCode === 5000){
+        } else if (err.response.data?.errorCode === 5000) {
             localStorage.removeItem('accessToken')
             localStorage.removeItem('refreshToken')
         }
