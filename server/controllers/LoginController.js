@@ -1,6 +1,7 @@
-const userService = require('../services/UserService')
+require('dotenv').config()
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+const userService = require('../services/UserService')
 const { createError } = require('../error/error')
 
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "AccessSecretKey"
